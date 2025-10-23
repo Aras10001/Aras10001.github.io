@@ -1,48 +1,146 @@
-MR
-MELISSA REX
-Photographer
-Intro Education Work Experience Skills Interests Portfolio Contact
-Download my resume Send me a message
-☰
-￼
-Hi, I'm Melissa Rex!
-Photographer
-Turpis, sit amet iaculis dui consectetur at. Cras sagittis molestie orci. Suspendisse ut laoreet mi. Phasellus eu tortor vehicula, blandit enim eu, auctor massa. Nulla ultricies tortor dolor, sit amet suscipit enim condimentum id.
-Profile
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Melissa Rex — Resume</title>
+  <meta name="description" content="Portfolio & resume site." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"/>
+  <script defer src="main.js"></script>
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="logo">MR</div>
+      <div class="brand-text">
+        <div class="name">MELISSA <span>REX</span></div>
+        <div class="role">Photographer</div>
+      </div>
+    </div>
 
-Full Name
-Melissa Williams Rex
-Born
-30 Aug 1991 — Austin, U.S.A
-Education
-BFA, Photography — University of Texas
-2010–2014
-Focus on portrait and editorial photography. Graduated with honors.
-Work Experience
-Lead Photographer — BrightLens Studio
-2019–Present
-	•	Directed 150+ portrait & lifestyle shoots.
-	•	Built lighting setups and post‑processing workflows.
-Assistant Photographer — Freelance
-2014–2019
-	•	Supported commercial and editorial sets.
-	•	Managed equipment, scheduling, and color grading.
-Skills
-	•	Portrait Lighting
-	•	Adobe Lightroom
-	•	Capture One
-	•	Retouching
-	•	Studio Management
-Interests
-Travel, minimal design, climbing, and analog photography.
-Portfolio
-￼
-Editorial
-￼
-Portrait
-￼
-Lifestyle
-Contact
-Email: melissa@example.com
-Instagram: instagram.com/melissarex
-© Melissa Rex. All rights reserved.
+    <nav class="nav">
+      <a href="#intro" class="nav-link">Intro</a>
+      <a href="#education" class="nav-link">Education</a>
+      <a href="#experience" class="nav-link">Work Experience</a>
+      <a href="#skills" class="nav-link">Skills</a>
+      <a href="#interests" class="nav-link">Interests</a>
+      <a href="#portfolio" class="nav-link">Portfolio</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </nav>
+
+    <div class="cta">
+      <a class="btn" href="assets/Melissa_Rex_Resume.pdf" download>Download my resume</a>
+      <a class="btn btn-ghost" href="mailto:melissa@example.com?subject=Hello%20Melissa">Send me a message</a>
+    </div>
+
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle menu">☰</button>
+  </aside>
+
+  <main class="content">
+    <header class="hero" id="intro">
+      <div class="hero-inner">
+        <img src="assets/profile.svg" alt="Portrait of Melissa Rex" class="avatar"/>
+        <div class="hero-copy">
+          <h1>Hi, I'm <span class="accent">Melissa Rex!</span></h1>
+          <p class="tagline">Photographer</p>
+          <p class="lede">
+            Turpis, sit amet iaculis dui consectetur at. Cras sagittis molestie orci.
+            <strong>Suspendisse ut laoreet mi.</strong> Phasellus eu tortor vehicula, blandit enim eu, auctor massa.
+            Nulla ultricies tortor dolor, sit amet suscipit enim <strong>condimentum id</strong>.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <section class="card" id="profile">
+      <h2 class="section-title">Profile</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="field">
+              <div class="label">Full Name</div>
+              <div class="value">Melissa Williams Rex</div>
+            </div>
+            <div class="field">
+              <div class="label">Born</div>
+              <div class="value">30 Aug 1991 — Austin, U.S.A</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="education">
+      <h2 class="section-title">Education</h2>
+      <div class="list">
+        <article>
+          <h3>BFA, Photography — University of Texas</h3>
+          <p class="muted">2010–2014</p>
+          <p>Focus on portrait and editorial photography. Graduated with honors.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="card" id="experience">
+      <h2 class="section-title">Work Experience</h2>
+      <div class="list">
+        <article>
+          <h3>Lead Photographer — BrightLens Studio</h3>
+          <p class="muted">2019–Present</p>
+          <ul>
+            <li>Directed 150+ portrait & lifestyle shoots.</li>
+            <li>Built lighting setups and post‑processing workflows.</li>
+          </ul>
+        </article>
+        <article>
+          <h3>Assistant Photographer — Freelance</h3>
+          <p class="muted">2014–2019</p>
+          <ul>
+            <li>Supported commercial and editorial sets.</li>
+            <li>Managed equipment, scheduling, and color grading.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="card" id="skills">
+      <h2 class="section-title">Skills</h2>
+      <ul class="tags">
+        <li>Portrait Lighting</li>
+        <li>Adobe Lightroom</li>
+        <li>Capture One</li>
+        <li>Retouching</li>
+        <li>Studio Management</li>
+      </ul>
+    </section>
+
+    <section class="card" id="interests">
+      <h2 class="section-title">Interests</h2>
+      <p>Travel, minimal design, climbing, and analog photography.</p>
+    </section>
+
+    <section class="card" id="portfolio">
+      <h2 class="section-title">Portfolio</h2>
+      <div class="grid">
+        <figure class="shot"><img src="assets/placeholder.jpg" alt="Portfolio item"/><figcaption>Editorial</figcaption></figure>
+        <figure class="shot"><img src="assets/placeholder.jpg" alt="Portfolio item"/><figcaption>Portrait</figcaption></figure>
+        <figure class="shot"><img src="assets/placeholder.jpg" alt="Portfolio item"/><figcaption>Lifestyle</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="card" id="contact">
+      <h2 class="section-title">Contact</h2>
+      <p>Email: <a href="mailto:melissa@example.com">melissa@example.com</a></p>
+      <p>Instagram: <a href="#" target="_blank" rel="noopener">instagram.com/melissarex</a></p>
+    </section>
+
+    <footer class="footer">
+      <p>© <span id="year"></span> Melissa Rex. All rights reserved.</p>
+    </footer>
+  </main>
+</body>
+</html>
