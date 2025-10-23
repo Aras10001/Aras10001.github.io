@@ -14,9 +14,9 @@
 <body>
   <aside class="sidebar" id="sidebar">
     <div class="brand">
-      <div class="logo">MR</div>
+      <div class="logo">AO</div>
       <div class="brand-text">
-        <div class="name">MELISSA <span>REX</span></div>
+        <div class="name">Aras <span>Ozdemir</span></div>
         <div class="role">Mechanical and Biomedical Engineer</div>
       </div>
     </div>
@@ -47,7 +47,9 @@
           <h1>Hi, I'm <span class="accent">Aras Ozdemir!</span></h1>
           <p class="tagline">Photographer</p>
           <p class="lede">
-            Turpis, sit amet iaculis dui consectetur at. Cras sagittis molestie orci.
+  
+            Seeking a full time position in a field related to Mechanical Engineering and/or Biomedical Engineering, commencing in 2025, driven by a deep passion for innovation and a steadfast dedication to advancing projects that push the boundaries of engineering excellence.<img width="468" height="64" alt="image" src="https://github.com/user-attachments/assets/5f7cd920-dcd3-4ccd-ae7b-2b6e3527114d" />
+
             <strong>Suspendisse ut laoreet mi.</strong> Phasellus eu tortor vehicula, blandit enim eu, auctor massa.
             Nulla ultricies tortor dolor, sit amet suscipit enim <strong>condimentum id</strong>.
           </p>
