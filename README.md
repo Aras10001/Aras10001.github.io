@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Melissa Rex — Resume</title>
+  <title>Aras Ozdemir — Resume</title>
   <meta name="description" content="Portfolio & resume site." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +17,7 @@
       <div class="logo">MR</div>
       <div class="brand-text">
         <div class="name">MELISSA <span>REX</span></div>
-        <div class="role">Photographer</div>
+        <div class="role">Mechanical and Biomedical Engineer</div>
       </div>
     </div>
 
@@ -32,7 +32,7 @@
     </nav>
 
     <div class="cta">
-      <a class="btn" href="assets/Melissa_Rex_Resume.pdf" download>Download my resume</a>
+      <a class="btn" href="assets/Ozdemir_Aras_Resume.pdf" download>Download my resume</a>
       <a class="btn btn-ghost" href="mailto:melissa@example.com?subject=Hello%20Melissa">Send me a message</a>
     </div>
 
@@ -44,7 +44,7 @@
       <div class="hero-inner">
         <img src="assets/profile.svg" alt="Portrait of Melissa Rex" class="avatar"/>
         <div class="hero-copy">
-          <h1>Hi, I'm <span class="accent">Melissa Rex!</span></h1>
+          <h1>Hi, I'm <span class="accent">Aras Ozdemir!</span></h1>
           <p class="tagline">Photographer</p>
           <p class="lede">
             Turpis, sit amet iaculis dui consectetur at. Cras sagittis molestie orci.
