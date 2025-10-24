@@ -72,6 +72,7 @@
     /* Projects grid */
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px }
     .card { position: relative; background: #0e1218; border: 1px solid #171b24; border-radius: 16px; overflow: hidden; }
+    .card:focus { outline: 2px solid var(--ring) }
     .card .thumb { aspect-ratio: 16/10; background: #0b0f16; display: grid; place-items: center; font-weight: 700; letter-spacing: .08em; color: #6b7280 }
     .card .body { padding: 12px 14px 14px }
     .card h3 { margin: 0 0 6px; font-size: 1.05rem }
@@ -117,10 +118,11 @@
   </style>
 </head>
 <body>
+  <a href="#intro" class="sr-only" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Skip to content</a>
   <div class="wrap">
-    <aside>
+    <aside aria-label="Sidebar">
       <div class="brand">
-        <div class="logo" aria-hidden>AO</div>
+        <div class="logo" aria-hidden="true">AO</div>
         <div>
           <div class="name">ARAS <span>OZDEMIR</span></div>
           <div class="role">Mechanical & Biomedical Engineering</div>
@@ -140,7 +142,7 @@
       <div class="cta">
         <a class="btn" href="assets/Ozdemir_Aras_Resume.pdf" download>Download résumé (PDF)</a>
         <a class="btn btn-ghost" href="mailto:arasoezdemir@hotmail.com?subject=Hello%20Aras">Email me</a>
-        <a class="btn btn-ghost" href="https://www.linkedin.com/in/aras-ozdemir-8432b3205/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/aras-ozdemir-8432b3205/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
       </div>
     </aside>
 
@@ -204,9 +206,9 @@
   </div>
 
   <!-- Modal (projects & activities share it) -->
-  <div class="modal" id="detailModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal" id="detailModal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle">
     <div class="modal-backdrop" data-close></div>
-    <div class="panel" role="document">
+    <div class="panel" role="document" tabindex="-1">
       <header>
         <h3 id="modalTitle">&nbsp;</h3>
         <button class="close" data-close aria-label="Close">✕</button>
@@ -360,12 +362,21 @@
       return node;
     }
 
+    // Utility: ensure YouTube iframe can be paused via postMessage
+    function withEnableJsApi(url) {
+      try {
+        const u = new URL(url, location.href);
+        if (!u.searchParams.has('enablejsapi')) u.searchParams.set('enablejsapi', '1');
+        return u.toString();
+      } catch { return url; }
+    }
+
     // ===== Render Experience =====
     function renderExperience() {
       const root = document.getElementById('experienceList');
       root.innerHTML = '';
       experience.forEach(x => {
-        const art = el('article', { class: 'card' }, [
+        const art = el('article', { class: 'card', tabindex: '0' }, [
           el('div', { class: 'body' }, [
             el('h3', {}, [document.createTextNode(x.title)]),
             el('p', { class: 'muted' }, [document.createTextNode(`${x.when} • ${x.where}`)]),
@@ -413,7 +424,7 @@
     }
 
     function cardForProject(p) {
-      const card = el('article', { class: 'card', role: 'listitem' });
+      const card = el('article', { class: 'card', role: 'listitem', tabindex: '0' });
       const thumb = el('div', { class: 'thumb' }, [document.createTextNode(p.title.split(' ')[0])]);
       const body = el('div', { class: 'body' }, [
         el('h3', {}, [document.createTextNode(p.title)]),
@@ -422,6 +433,7 @@
       ]);
       const btn = el('button', { 'aria-label': `Open details for ${p.title}` });
       btn.addEventListener('click', () => openProject(p.id));
+      card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openProject(p.id); } });
       card.append(thumb, body, btn);
       return card;
     }
@@ -458,25 +470,40 @@
     const mLinks = document.getElementById('modalLinks');
     const mTags = document.getElementById('modalTags');
 
+    let lastFocused = null;
+
+    function setSiblingsAriaHidden(hidden) {
+      ['main','aside'].forEach(sel => { const el = document.querySelector(sel); if (el) el.setAttribute('aria-hidden', hidden ? 'true' : 'false'); });
+    }
+
     function openModal() {
+      lastFocused = document.activeElement;
       modal.setAttribute('open', '');
       modal.setAttribute('aria-hidden', 'false');
+      modal.setAttribute('aria-modal', 'true');
       document.body.style.overflow = 'hidden';
+      setSiblingsAriaHidden(true);
+      // focus the dialog panel
+      $('.panel', modal).focus();
     }
     function closeModal() {
       modal.removeAttribute('open');
       modal.setAttribute('aria-hidden', 'true');
+      modal.removeAttribute('aria-modal');
       document.body.style.overflow = '';
+      setSiblingsAriaHidden(false);
       // stop any YouTube playback
       $$('#modalGallery iframe').forEach(frame => {
         frame.contentWindow?.postMessage(JSON.stringify({event: 'command', func: 'pauseVideo', args: ''}), '*');
       });
       // cleanup
       mGallery.innerHTML = ''; mSummary.innerHTML = ''; mBullets.innerHTML = ''; mLinks.innerHTML = ''; mTags.innerHTML=''; mTitle.textContent=''; mMeta.textContent='';
+      // restore focus
+      if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
     }
 
     modal.addEventListener('click', (e) => { if (e.target.hasAttribute('data-close')) closeModal(); });
-    modal.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
     $$('[data-close]', modal).forEach(b => b.addEventListener('click', closeModal));
 
     function populateModal({title, where, when, summary, bullets, tags, media, links}) {
@@ -485,14 +512,14 @@
       mSummary.textContent = summary || '';
       (bullets||[]).forEach(b => mBullets.append(el('li', {}, [document.createTextNode(b)])));
       (tags||[]).forEach(t => mTags.append(el('span', { class: 'chip' }, [document.createTextNode(t)])));
-      (links||[]).forEach(l => mLinks.append(el('a', { class: 'btn', href: l.href, target: '_blank', rel: 'noopener' }, [document.createTextNode(l.label)])));
+      (links||[]).forEach(l => mLinks.append(el('a', { class: 'btn', href: l.href, target: '_blank', rel: 'noopener noreferrer' }, [document.createTextNode(l.label)])));
 
       if (!media || !media.length) {
         mGallery.append(el('div', { style: 'display:grid;place-items:center;height:360px;color:#6b7280' }, [document.createTextNode('No media')]));
       } else {
         const first = media[0];
         if (first.type === 'youtube') {
-          mGallery.append(el('iframe', { src: first.src, title: `${title} video`, allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share', allowfullscreen: '' }));
+          mGallery.append(el('iframe', { src: withEnableJsApi(first.src), title: `${title} video`, allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share', allowfullscreen: '' }));
         } else if (first.type === 'image') {
           mGallery.append(el('img', { src: first.src, alt: first.alt || title }));
         } else if (first.type === 'pdf') {
@@ -532,13 +559,15 @@
   </script>
 
   <!-- Person schema for SEO -->
-  <script type="application/ld+json">
-    {
+  <script type="application/ld+json" id="person-jsonld"></script>
+  <script>
+    // Populate JSON-LD dynamically so the URL is always correct
+    const person = {
       "@context": "https://schema.org",
       "@type": "Person",
       "name": "Aras Ozdemir",
       "jobTitle": "Mechanical & Biomedical Engineer",
-      "url": "",
+      "url": window.location.href,
       "email": "mailto:arasoezdemir@hotmail.com",
       "telephone": "+16072625047",
       "address": {
@@ -552,7 +581,8 @@
       "sameAs": [
         "https://www.linkedin.com/in/aras-ozdemir-8432b3205/"
       ]
-    }
+    };
+    document.getElementById('person-jsonld').textContent = JSON.stringify(person);
   </script>
 </body>
 </html>
