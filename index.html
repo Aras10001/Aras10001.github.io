@@ -72,7 +72,6 @@
     /* Projects grid */
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px }
     .card { position: relative; background: #0e1218; border: 1px solid #171b24; border-radius: 16px; overflow: hidden; }
-    .card:focus { outline: 2px solid var(--ring) }
     .card .thumb { aspect-ratio: 16/10; background: #0b0f16; display: grid; place-items: center; font-weight: 700; letter-spacing: .08em; color: #6b7280 }
     .card .body { padding: 12px 14px 14px }
     .card h3 { margin: 0 0 6px; font-size: 1.05rem }
@@ -86,12 +85,10 @@
     .filter[aria-pressed="true"] { background: #1f2937; outline: 2px solid #374151 }
 
     /* Modal */
-    .modal-backdrop { position: fixed; inset: 0; background: rgba(2,6,23,.6); display: none; }
-    .modal { position: fixed; inset: 0; display: grid; place-items: center; pointer-events: none; }
-    .modal[open] .modal-backdrop { display: block }
-    .modal[open] .panel { transform: translateY(0); opacity: 1; }
+    .modal { position: fixed; inset: 0; display: none; place-items: center; background: rgba(2,6,23,.6); }
+    .modal[open] { display: grid; }
     .panel {
-      pointer-events: auto; width: min(920px, 92vw); max-height: 88vh; overflow: auto; background: #0e1218; border: 1px solid #1e2534; border-radius: 16px; box-shadow: 0 50px 80px #0007; padding: 18px; transform: translateY(8px); opacity: .9; transition: transform .2s ease, opacity .2s ease;
+      pointer-events: auto; width: min(920px, 92vw); max-height: 88vh; overflow: auto; background: #0e1218; border: 1px solid #1e2534; border-radius: 16px; box-shadow: 0 50px 80px #0007; padding: 18px; transition: transform .2s ease, opacity .2s ease;
     }
     .panel header { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start; }
     .panel h3 { margin: 0 }
@@ -118,9 +115,8 @@
   </style>
 </head>
 <body>
-  <a href="#intro" class="sr-only" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Skip to content</a>
   <div class="wrap">
-    <aside aria-label="Sidebar">
+    <aside>
       <div class="brand">
         <div class="logo" aria-hidden="true">AO</div>
         <div>
@@ -175,23 +171,23 @@
 
       <section id="experience" class="section" aria-labelledby="exp-h">
         <h2 id="exp-h">Work Experience</h2>
-        <div class="list" id="experienceList"><!-- populated by JS --></div>
+        <div class="list" id="experienceList"></div>
       </section>
 
       <section id="projects" class="section" aria-labelledby="proj-h">
         <h2 id="proj-h">Projects</h2>
-        <div class="filters" id="projectFilters"><!-- tags by JS --></div>
-        <div class="grid" id="projectGrid" role="list"><!-- cards by JS --></div>
+        <div class="filters" id="projectFilters"></div>
+        <div class="grid" id="projectGrid" role="list"></div>
       </section>
 
       <section id="skills" class="section" aria-labelledby="skills-h">
         <h2 id="skills-h">Skills</h2>
-        <ul class="tags" id="skillTags"><!-- by JS --></ul>
+        <ul class="tags" id="skillTags"></ul>
       </section>
 
       <section id="activities" class="section" aria-labelledby="act-h">
         <h2 id="act-h">Activities</h2>
-        <div class="activities" id="activityList"><!-- by JS --></div>
+        <div class="activities" id="activityList"></div>
       </section>
 
       <section id="contact" class="section" aria-labelledby="contact-h">
@@ -204,385 +200,5 @@
       <p class="muted" style="margin: 20px 8px">© <span id="year"></span> Aras Ozdemir</p>
     </main>
   </div>
-
-  <!-- Modal (projects & activities share it) -->
-  <div class="modal" id="detailModal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle">
-    <div class="modal-backdrop" data-close></div>
-    <div class="panel" role="document" tabindex="-1">
-      <header>
-        <h3 id="modalTitle">&nbsp;</h3>
-        <button class="close" data-close aria-label="Close">✕</button>
-        <div class="muted" id="modalMeta"></div>
-      </header>
-      <div class="detail">
-        <div class="gallery" id="modalGallery"><!-- media --></div>
-        <div class="info">
-          <div id="modalSummary"></div>
-          <ul class="bullets" id="modalBullets"></ul>
-          <div class="links" id="modalLinks"></div>
-          <div id="modalTags" class="tags"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // ===== Data (easy to extend) =====
-    const experience = [
-      {
-        title: "Quality Engineering Intern — Fresenius Kabi",
-        when: "Nov 2024 – Aug 2025",
-        where: "Frankfurt, Hesse",
-        bullets: [
-          "Administered testing of medical devices to ISO & DIN norms.",
-          "Collaborated with FDA on guideline testing & US documentation.",
-          "Reviewed complex 3D models and produced technical drawings.",
-          "Updated drawings to ensure FDA compliance.",
-          "Built automated steel/polymer test rigs to reduce variables.",
-          "Supported cross‑functional development aligned with quality & regulatory.",
-          "Optimized test procedures to boost validation efficiency and accuracy."
-        ],
-        tags: ["ISO", "DIN", "FDA", "Validation", "Automation"],
-      },
-      {
-        title: "Research Assistant — The Pennsylvania State University",
-        when: "Jan 2023 – Jan 2024",
-        where: "State College, PA",
-        bullets: [
-          "Researched antibacterial properties of bacteriophages.",
-          "Used advanced microscopy to study interactions.",
-          "Built a MATLAB GUI app to automate data analysis.",
-          "Applied filtering methods to reduce noise and improve visualizations."
-        ],
-        tags: ["Microscopy", "MATLAB", "Signal Processing"],
-      },
-    ];
-
-    const projects = [
-      {
-        id: "asml",
-        title: "ASML Engineering Project",
-        where: "Ithaca, NY",
-        when: "Aug 2025 – Present",
-        summary: "Designing electrical & mechanical infrastructure and control for a donated robotic handling arm, with safety and reliability at the core.",
-        bullets: [
-          "Implement electrical & mechanical infrastructure to support operation.",
-          "Develop control network with a focus on reliability and precision.",
-          "Perform risk assessments to define capability & safety limits.",
-          "Publish safety guidelines & operational protocols.",
-          "Build sensors & electronics to increase trajectory safety."
-        ],
-        tags: ["Robotics", "Controls", "Risk", "Safety"],
-        media: [
-          { type: "image", src: "assets/placeholder.jpg", alt: "Robotic arm placeholder" }
-        ],
-      },
-      {
-        id: "bbraun",
-        title: "B. Braun CAPSTONE",
-        where: "State College, PA",
-        when: "Jan 2024 – May 2024",
-        summary: "Solving secondary connector unclamping during medical procedures through iterative prototyping and testing.",
-        bullets: [
-          "Analyzed failure modes of secondary connector unclamping.",
-          "Designed & tested multiple prototypes to improve grip & reliability.",
-          "Delivered final design that met sponsor expectations and influenced standards.",
-          "Prepared prototype and documentation toward FDA review."
-        ],
-        tags: ["Medical Devices", "Prototyping", "Testing", "FDA"],
-        media: [
-          { type: "youtube", src: "https://www.youtube.com/embed/e7jPhOMTgnY?rel=0&modestbranding=1&playsinline=1" },
-          { type: "image", src: "assets/placeholder.jpg", alt: "Prototype close-up" },
-          { type: "image", src: "assets/placeholder.jpg", alt: "Testing setup" },
-          { type: "image", src: "assets/placeholder.jpg", alt: "Final assembly" },
-        ],
-        links: [
-          { label: "Sponsor", href: "https://www.bbraun.com" }
-        ]
-      },
-      {
-        id: "discovery",
-        title: "Exhibition — Discovery Space Museum",
-        where: "State College, PA",
-        when: "Aug 2023 – Dec 2023",
-        summary: "Interactive exhibit designed to spark curiosity while meeting safety, reliability, and durability standards.",
-        bullets: [
-          "Designed interactive mechanisms for hands‑on learning.",
-          "Ensured safety & durability of all mechanical elements.",
-        ],
-        tags: ["Exhibit", "Design", "Safety"],
-        media: [
-          { type: "image", src: "assets/discovery-01.jpg", alt: "Exhibit overview" },
-          { type: "image", src: "assets/discovery-02.jpg", alt: "Mechanism close‑up" },
-          { type: "image", src: "assets/discovery-03.jpg", alt: "Children engaging with panels" },
-        ],
-      },
-      {
-        id: "numerical",
-        title: "Numerical Simulation Project",
-        where: "State College, PA",
-        when: "Jan 2023 – May 2023",
-        summary: "COMSOL simulations of complex stent geometries (e.g., elliptical cross‑sections) to study mechanics and fluid dynamics.",
-        bullets: [
-          "Modeled stent geometries and boundary conditions.",
-          "Predicted fluid flow and stress impact on stents.",
-        ],
-        tags: ["COMSOL", "CFD", "FEA"],
-        media: [
-          { type: "pdf", src: "assets/BME_401_FinalProject_Group4_Doc.pdf", label: "Read full report (PDF)" }
-        ],
-      },
-    ];
-
-    const activities = [
-      { id: "travel", title: "Travel", when: "Ongoing", summary: "Exploring new places informs my design intuition and empathy.", tags: ["Curiosity"], media: [] },
-      { id: "f1", title: "F1 Racing (fan)", when: "Since 2015", summary: "Systems thinking & reliability obsessions translate to my engineering approach.", tags: ["Motorsport"], media: [] },
-      { id: "sports", title: "Swimming & Tennis", when: "Ongoing", summary: "Discipline and feedback loops.", tags: ["Wellness"], media: [] },
-      { id: "gaming", title: "Video Games", when: "Ongoing", summary: "Rapid problem solving & strategy under constraints.", tags: ["Strategy"], media: [] },
-      { id: "gym", title: "Gym", when: "Ongoing", summary: "Consistency, progressive overload, measured improvement.", tags: ["Habits"], media: [] },
-    ];
-
-    const skills = [
-      "MATLAB", "R", "Python", "COMSOL Multiphysics", "SolidWorks", "MS Office", "LaTeX", "HTML",
-      "FDA Regulation", "ISO Standards", "Verification", "Validation", "Design Controls", "Risk Management",
-      "Decision‑Making", "Data Analysis", "Cross‑Cultural Competence",
-      "English (Native)", "German (Native)", "Turkish (Intermediate)", "Spanish (Intermediate)"
-    ];
-
-    // ===== Helpers =====
-    const $ = (sel, el=document) => el.querySelector(sel);
-    const $$ = (sel, el=document) => Array.from(el.querySelectorAll(sel));
-
-    function el(tag, attrs={}, children=[]) {
-      const node = document.createElement(tag);
-      Object.entries(attrs).forEach(([k,v]) => {
-        if (k === 'class') node.className = v; else if (k === 'html') node.innerHTML = v; else node.setAttribute(k, v);
-      });
-      children.forEach(c => node.append(c));
-      return node;
-    }
-
-    // Utility: ensure YouTube iframe can be paused via postMessage
-    function withEnableJsApi(url) {
-      try {
-        const u = new URL(url, location.href);
-        if (!u.searchParams.has('enablejsapi')) u.searchParams.set('enablejsapi', '1');
-        return u.toString();
-      } catch { return url; }
-    }
-
-    // ===== Render Experience =====
-    function renderExperience() {
-      const root = document.getElementById('experienceList');
-      root.innerHTML = '';
-      experience.forEach(x => {
-        const art = el('article', { class: 'card', tabindex: '0' }, [
-          el('div', { class: 'body' }, [
-            el('h3', {}, [document.createTextNode(x.title)]),
-            el('p', { class: 'muted' }, [document.createTextNode(`${x.when} • ${x.where}`)]),
-            el('ul', {}, x.bullets.map(b => el('li', {}, [document.createTextNode(b)]))),
-            el('div', { class: 'tags', role: 'list' }, x.tags.map(t => el('span', { class: 'chip', role: 'listitem' }, [document.createTextNode(t)])))
-          ])
-        ]);
-        root.append(art);
-      });
-    }
-
-    // ===== Render Skills =====
-    function renderSkills() {
-      const ul = document.getElementById('skillTags');
-      ul.innerHTML = '';
-      skills.forEach(s => ul.append(el('li', { class: 'chip' }, [document.createTextNode(s)])));
-    }
-
-    // ===== Projects (grid + filters + modal) =====
-    function distinctTags(arr) { return Array.from(new Set(arr.flatMap(p => p.tags || []))).sort(); }
-
-    let activeFilters = new Set();
-
-    function renderProjectFilters() {
-      const root = document.getElementById('projectFilters');
-      root.innerHTML = '';
-      distinctTags(projects).forEach(tag => {
-        const btn = el('button', { class: 'filter', 'aria-pressed': 'false' }, [document.createTextNode(tag)]);
-        btn.addEventListener('click', () => {
-          if (activeFilters.has(tag)) activeFilters.delete(tag); else activeFilters.add(tag);
-          btn.setAttribute('aria-pressed', activeFilters.has(tag) ? 'true' : 'false');
-          renderProjectGrid();
-        });
-        root.append(btn);
-      });
-      // Quick clear
-      const clear = el('button', { class: 'filter', title: 'Clear filters' }, [document.createTextNode('Clear')]);
-      clear.addEventListener('click', () => { activeFilters = new Set(); $$('#projectFilters .filter').forEach(b => b.setAttribute('aria-pressed', 'false')); renderProjectGrid(); });
-      root.append(clear);
-    }
-
-    function passesFilters(p) {
-      if (!activeFilters.size) return true;
-      return (p.tags || []).some(t => activeFilters.has(t));
-    }
-
-    function cardForProject(p) {
-      const card = el('article', { class: 'card', role: 'listitem', tabindex: '0' });
-      const thumb = el('div', { class: 'thumb' }, [document.createTextNode(p.title.split(' ')[0])]);
-      const body = el('div', { class: 'body' }, [
-        el('h3', {}, [document.createTextNode(p.title)]),
-        el('div', { class: 'meta' }, [ el('span', { class: 'chip' }, [document.createTextNode(p.where)]), el('span', { class: 'chip' }, [document.createTextNode(p.when)]) ]),
-        el('div', { class: 'tags', role: 'list' }, (p.tags||[]).map(t => el('span', { class: 'chip', role: 'listitem' }, [document.createTextNode(t)])))
-      ]);
-      const btn = el('button', { 'aria-label': `Open details for ${p.title}` });
-      btn.addEventListener('click', () => openProject(p.id));
-      card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openProject(p.id); } });
-      card.append(thumb, body, btn);
-      return card;
-    }
-
-    function renderProjectGrid() {
-      const grid = document.getElementById('projectGrid');
-      grid.innerHTML = '';
-      projects.filter(passesFilters).forEach(p => grid.append(cardForProject(p)));
-      if (!grid.children.length) grid.append(el('p', { class: 'muted' }, [document.createTextNode('No projects match the selected filters.')]))
-    }
-
-    // ===== Activities =====
-    function renderActivities() {
-      const root = document.getElementById('activityList');
-      root.innerHTML = '';
-      activities.forEach(a => {
-        const row = el('div', { class: 'activity' }, [
-          el('span', { class: 'chip' }, [document.createTextNode(a.tags?.[0] || 'Activity')]),
-          el('div', {}, [ el('div', { class: 'title' }, [document.createTextNode(a.title)]), el('div', { class: 'muted when' }, [document.createTextNode(a.when)]) ]),
-          el('button', { class: 'btn btn-ghost', 'aria-label': `Open details for ${a.title}` }, [document.createTextNode('Open')])
-        ]);
-        $('button', row).addEventListener('click', () => openActivity(a.id));
-        root.append(row);
-      });
-    }
-
-    // ===== Modal controls =====
-    const modal = document.getElementById('detailModal');
-    const mTitle = document.getElementById('modalTitle');
-    const mMeta  = document.getElementById('modalMeta');
-    const mGallery = document.getElementById('modalGallery');
-    const mSummary = document.getElementById('modalSummary');
-    const mBullets = document.getElementById('modalBullets');
-    const mLinks = document.getElementById('modalLinks');
-    const mTags = document.getElementById('modalTags');
-
-    let lastFocused = null;
-
-    function setSiblingsAriaHidden(hidden) {
-      ['main','aside'].forEach(sel => { const el = document.querySelector(sel); if (el) el.setAttribute('aria-hidden', hidden ? 'true' : 'false'); });
-    }
-
-    function openModal() {
-      lastFocused = document.activeElement;
-      modal.setAttribute('open', '');
-      modal.setAttribute('aria-hidden', 'false');
-      modal.setAttribute('aria-modal', 'true');
-      document.body.style.overflow = 'hidden';
-      setSiblingsAriaHidden(true);
-      // focus the dialog panel
-      $('.panel', modal).focus();
-    }
-    function closeModal() {
-      modal.removeAttribute('open');
-      modal.setAttribute('aria-hidden', 'true');
-      modal.removeAttribute('aria-modal');
-      document.body.style.overflow = '';
-      setSiblingsAriaHidden(false);
-      // stop any YouTube playback
-      $$('#modalGallery iframe').forEach(frame => {
-        frame.contentWindow?.postMessage(JSON.stringify({event: 'command', func: 'pauseVideo', args: ''}), '*');
-      });
-      // cleanup
-      mGallery.innerHTML = ''; mSummary.innerHTML = ''; mBullets.innerHTML = ''; mLinks.innerHTML = ''; mTags.innerHTML=''; mTitle.textContent=''; mMeta.textContent='';
-      // restore focus
-      if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
-    }
-
-    modal.addEventListener('click', (e) => { if (e.target.hasAttribute('data-close')) closeModal(); });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
-    $$('[data-close]', modal).forEach(b => b.addEventListener('click', closeModal));
-
-    function populateModal({title, where, when, summary, bullets, tags, media, links}) {
-      mTitle.textContent = title;
-      mMeta.textContent = `${when || ''}${when && where ? ' • ' : ''}${where || ''}`;
-      mSummary.textContent = summary || '';
-      (bullets||[]).forEach(b => mBullets.append(el('li', {}, [document.createTextNode(b)])));
-      (tags||[]).forEach(t => mTags.append(el('span', { class: 'chip' }, [document.createTextNode(t)])));
-      (links||[]).forEach(l => mLinks.append(el('a', { class: 'btn', href: l.href, target: '_blank', rel: 'noopener noreferrer' }, [document.createTextNode(l.label)])));
-
-      if (!media || !media.length) {
-        mGallery.append(el('div', { style: 'display:grid;place-items:center;height:360px;color:#6b7280' }, [document.createTextNode('No media')]));
-      } else {
-        const first = media[0];
-        if (first.type === 'youtube') {
-          mGallery.append(el('iframe', { src: withEnableJsApi(first.src), title: `${title} video`, allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share', allowfullscreen: '' }));
-        } else if (first.type === 'image') {
-          mGallery.append(el('img', { src: first.src, alt: first.alt || title }));
-        } else if (first.type === 'pdf') {
-          mGallery.append(el('iframe', { src: first.src, title: `${title} PDF` }));
-          mLinks.append(el('a', { class: 'btn', href: first.src, download: '' }, [document.createTextNode(first.label || 'Download PDF')]));
-        }
-      }
-    }
-
-    // Deep-linking: #project/{id} or #activity/{id}
-    function openProject(id) {
-      const p = projects.find(x => x.id === id);
-      if (!p) return; populateModal(p); openModal(); location.hash = `#project/${id}`;
-    }
-    function openActivity(id) {
-      const a = activities.find(x => x.id === id);
-      if (!a) return; populateModal({ title: a.title, where: '', when: a.when, summary: a.summary, bullets: [], tags: a.tags, media: a.media }); openModal(); location.hash = `#activity/${id}`;
-    }
-
-    function handleHash() {
-      const h = location.hash.slice(1);
-      if (!h) return;
-      const [type, id] = h.split('/');
-      if (type === 'project') openProject(id);
-      if (type === 'activity') openActivity(id);
-    }
-
-    // ===== Init =====
-    renderExperience();
-    renderProjectFilters();
-    renderProjectGrid();
-    renderSkills();
-    renderActivities();
-    document.getElementById('year').textContent = new Date().getFullYear();
-    window.addEventListener('hashchange', handleHash);
-    handleHash();
-  </script>
-
-  <!-- Person schema for SEO -->
-  <script type="application/ld+json" id="person-jsonld"></script>
-  <script>
-    // Populate JSON-LD dynamically so the URL is always correct
-    const person = {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Aras Ozdemir",
-      "jobTitle": "Mechanical & Biomedical Engineer",
-      "url": window.location.href,
-      "email": "mailto:arasoezdemir@hotmail.com",
-      "telephone": "+16072625047",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "114 Veterans Pl, Apt D",
-        "addressLocality": "Ithaca",
-        "addressRegion": "NY",
-        "postalCode": "14850",
-        "addressCountry": "US"
-      },
-      "sameAs": [
-        "https://www.linkedin.com/in/aras-ozdemir-8432b3205/"
-      ]
-    };
-    document.getElementById('person-jsonld').textContent = JSON.stringify(person);
-  </script>
 </body>
 </html>
