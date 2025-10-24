@@ -2,319 +2,557 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Aras Ozdemir — Resume</title>
-  <meta name="description" content="Portfolio & resume site." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aras Ozdemir — Resume & Portfolio</title>
+  <meta name="description" content="Interactive resume and portfolio for Aras Ozdemir — Mechanical & Biomedical Engineering." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css"/>
-  <script defer src="main.js"></script>
 
-  <!-- Scoped gallery & PDF styles (kept small and non-invasive) -->
   <style>
-    .shot { display: flex; flex-direction: column; gap: .5rem; }
-    .shot .gallery {
-      position: relative;
-      overflow: hidden;
-      border-radius: 12px;
-      background: #0b0c0f10;
-      box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.08);
+    :root {
+      --bg: #0b0c0f;
+      --card: #111318;
+      --muted: #9aa4b2;
+      --text: #e5e7eb;
+      --accent: #60a5fa;
+      --ring: #2563eb44;
+      --chip: #1f2937;
+      --chip-text: #cbd5e1;
     }
-    .shot .slide { display: none; }
-    .shot .slide.is-active { display: block; }
-    .shot .video-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; }
-    .shot .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-    .shot .slide img { display: block; width: 100%; height: auto; }
-
-    .shot .nav {
-      position: absolute; top: 50%; transform: translateY(-50%);
-      border: 0; background: rgba(15, 23, 42, .6); color: #fff;
-      width: 40px; height: 40px; border-radius: 10px;
-      font-size: 24px; line-height: 40px; text-align: center;
-      cursor: pointer; transition: background .2s ease;
-    }
-    .shot .nav:hover { background: rgba(15, 23, 42, .75); }
-    .shot .nav:focus { outline: 2px solid #fff; outline-offset: 2px; }
-    .shot .nav.prev { left: 8px; } .shot .nav.next { right: 8px; }
-
-    .shot .dots { display: flex; gap: 8px; justify-content: center; padding: 10px 0 6px; }
-    .shot .dot { width: 9px; height: 9px; border-radius: 50%; border: 0; background: #cbd5e1; cursor: pointer; }
-    .shot .dot.is-active { background: #0f172a; }
-
-    .shot .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-
-    @media (prefers-reduced-motion: no-preference) {
-      .shot .slide { animation: shot-fade .28s ease-in-out; }
-      @keyframes shot-fade { from { opacity: 0 } to { opacity: 1 } }
+    * { box-sizing: border-box }
+    html, body { height: 100% }
+    body {
+      margin: 0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: linear-gradient(180deg, #0b0c10 0%, #0b0c0f 30%, #0b0c0f 100%);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
     }
 
-    .pdf-viewer {
-      border: none; width: 100%; height: 420px;
-      border-radius: 12px;
-      box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.08);
+    /* Layout */
+    .wrap { display: grid; grid-template-columns: 300px 1fr; min-height: 100vh; }
+    aside {
+      position: sticky; top: 0; align-self: start; height: 100vh; padding: 28px 20px; background: #0b0c0f; border-right: 1px solid #161a21;
+      display: flex; flex-direction: column; gap: 18px;
     }
-    .pdf-download { text-align: center; margin-top: .5rem; }
-    .pdf-download a {
-      color: #fff; background-color: #0f172a;
-      padding: 0.4rem 1rem; border-radius: 6px; text-decoration: none; font-weight: 500;
-      transition: background .2s;
+    main { padding: 32px 28px; }
+
+    /* Sidebar */
+    .brand { display: flex; align-items: center; gap: 14px; }
+    .logo { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-weight: 800; background: #111827; color: #fff; box-shadow: 0 8px 24px #0006 inset, 0 1px 0 #ffffff08 inset; }
+    .name { font-weight: 800; letter-spacing: .5px }
+    .name span { color: var(--accent) }
+    .role { color: var(--muted); font-size: .9rem }
+
+    .nav { display: grid; gap: 2px; margin-top: 6px }
+    .nav a { color: var(--text); text-decoration: none; padding: 10px 12px; border-radius: 10px; display: block; opacity: .9 }
+    .nav a:hover, .nav a[aria-current="page"] { background: #0e1220; outline: 1px solid #1e293b; }
+
+    .cta { margin-top: auto; display: grid; gap: 10px }
+    .btn { display: inline-flex; justify-content: center; align-items: center; gap: .5rem; padding: 10px 14px; border-radius: 12px; background: #1f2937; color: #fff; text-decoration: none; font-weight: 600; border: 1px solid #2b3647; }
+    .btn:hover { background: #253244 }
+    .btn-ghost { background: transparent; border: 1px solid #293241 }
+
+    /* Content */
+    .hero { display: grid; grid-template-columns: 88px 1fr; gap: 18px; align-items: center; margin-bottom: 24px }
+    .avatar { width: 88px; height: 88px; border-radius: 18px; background: #0f172a; object-fit: cover; }
+    .tagline { color: var(--muted); margin: 6px 0 0 }
+    .lede { margin-top: 8px; line-height: 1.6 }
+
+    .section { background: var(--card); border: 1px solid #161a21; border-radius: 18px; padding: 18px; margin: 16px 0 0; box-shadow: 0 10px 30px #0005;
+      backdrop-filter: blur(8px);
     }
-    .pdf-download a:hover { background-color: #1e293b; }
+    .section h2 { margin: 0 0 12px; letter-spacing: .3px }
+    .muted { color: var(--muted) }
+
+    .list { display: grid; gap: 16px }
+    .chip { display: inline-flex; align-items: center; padding: 6px 10px; border-radius: 999px; background: var(--chip); color: var(--chip-text); border: 1px solid #2f3a4e; font-size: .85rem }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none }
+
+    /* Projects grid */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px }
+    .card { position: relative; background: #0e1218; border: 1px solid #171b24; border-radius: 16px; overflow: hidden; }
+    .card .thumb { aspect-ratio: 16/10; background: #0b0f16; display: grid; place-items: center; font-weight: 700; letter-spacing: .08em; color: #6b7280 }
+    .card .body { padding: 12px 14px 14px }
+    .card h3 { margin: 0 0 6px; font-size: 1.05rem }
+    .card .meta { display: flex; gap: 6px; flex-wrap: wrap }
+    .card button, .card a.card-link { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: none; cursor: pointer; }
+    .card:focus-within { outline: 2px solid var(--ring) }
+
+    /* Filters */
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 12px }
+    .filter { border: 1px solid #263044; background: #141a25; color: #cbd5e1; padding: 6px 10px; border-radius: 999px; cursor: pointer; }
+    .filter[aria-pressed="true"] { background: #1f2937; outline: 2px solid #374151 }
+
+    /* Modal */
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(2,6,23,.6); display: none; }
+    .modal { position: fixed; inset: 0; display: grid; place-items: center; pointer-events: none; }
+    .modal[open] .modal-backdrop { display: block }
+    .modal[open] .panel { transform: translateY(0); opacity: 1; }
+    .panel {
+      pointer-events: auto; width: min(920px, 92vw); max-height: 88vh; overflow: auto; background: #0e1218; border: 1px solid #1e2534; border-radius: 16px; box-shadow: 0 50px 80px #0007; padding: 18px; transform: translateY(8px); opacity: .9; transition: transform .2s ease, opacity .2s ease;
+    }
+    .panel header { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start; }
+    .panel h3 { margin: 0 }
+    .close { inline-size: 40px; block-size: 40px; border-radius: 10px; border: 1px solid #2a3346; background: #131a25; color: #e5e7eb; cursor: pointer }
+    .detail { display: grid; grid-template-columns: 1.2fr .8fr; gap: 18px; margin-top: 12px }
+    .detail .gallery { border: 1px solid #1a2130; border-radius: 12px; overflow: hidden; background: #0b0f16 }
+    .detail .gallery iframe, .detail .gallery img { width: 100%; height: 360px; object-fit: cover; display: block; border: 0 }
+    .detail .info { display: grid; gap: 10px }
+    .bullets { padding-left: 18px; margin: 0 }
+    .links { display: flex; gap: 8px; flex-wrap: wrap }
+
+    /* Activities */
+    .activities { display: grid; gap: 10px }
+    .activity { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; padding: 10px 12px; border: 1px solid #171b24; border-radius: 12px; background: #0e1218 }
+    .activity .title { font-weight: 600 }
+    .activity .when { color: var(--muted); font-size: .9rem }
+
+    /* Responsive */
+    @media (max-width: 980px) {
+      .wrap { grid-template-columns: 1fr }
+      aside { position: static; height: auto }
+      .detail { grid-template-columns: 1fr }
+    }
   </style>
 </head>
 <body>
-  <aside class="sidebar" id="sidebar">
-    <div class="brand">
-      <div class="logo">AO</div>
-      <div class="brand-text">
-        <div class="name">ARAS <span>OZDEMIR</span></div>
-        <div class="role">Mechanical and Biomedical Engineering</div>
-      </div>
-    </div>
-
-    <nav class="nav">
-      <a href="#intro" class="nav-link">Intro</a>
-      <a href="#profile" class="nav-link">Profile</a>
-      <a href="#education" class="nav-link">Education</a>
-      <a href="#experience" class="nav-link">Work Experience</a>
-      <a href="#skills" class="nav-link">Skills</a>
-      <a href="#interests" class="nav-link">Interests</a>
-      <a href="#portfolio" class="nav-link">Portfolio</a>
-      <a href="#contact" class="nav-link">Contact</a>
-    </nav>
-
-    <div class="cta">
-      <a class="btn" href="assets/Ozdemir_Aras_Resume.pdf" download>Download my resume</a>
-      <a class="btn btn-ghost" href="mailto:arasoezdemir@hotmail.com?subject=Hello%20Aras">Send me a message</a>
-    </div>
-
-    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle menu">☰</button>
-  </aside>
-
-  <main class="content">
-    <header class="hero" id="intro">
-      <div class="hero-inner">
-        <img src="assets/profile.svg" alt="Portrait of Aras Ozdemir" class="avatar"/>
-        <div class="hero-copy">
-          <h1>Hi, I'm <span class="accent">Aras Ozdemir!</span></h1>
-          <p class="tagline">Engineer</p>
-          <p class="lede">
-            Seeking a <strong>full-time position</strong> in Mechanical and/or Biomedical Engineering,
-            <strong>commencing in 2026</strong>, driven by a deep passion for innovation and a steadfast dedication
-            to advancing projects that push the boundaries of engineering excellence.
-          </p>
+  <div class="wrap">
+    <aside>
+      <div class="brand">
+        <div class="logo" aria-hidden>AO</div>
+        <div>
+          <div class="name">ARAS <span>OZDEMIR</span></div>
+          <div class="role">Mechanical & Biomedical Engineering</div>
         </div>
       </div>
-    </header>
 
-    <section class="card" id="profile">
-      <h2 class="section-title">Profile</h2>
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="field">
-              <div class="label">Full Name</div>
-              <div class="value">Aras Memo Ozdemir</div>
-            </div>
-            <div class="field">
-              <div class="label">Born</div>
-              <div class="value">24. Nov. 2001 — Mainz, Germany</div>
-            </div>
+      <nav class="nav" aria-label="Primary">
+        <a href="#intro" aria-current="page">Intro</a>
+        <a href="#education">Education</a>
+        <a href="#experience">Work Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#activities">Activities</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="cta">
+        <a class="btn" href="assets/Ozdemir_Aras_Resume.pdf" download>Download résumé (PDF)</a>
+        <a class="btn btn-ghost" href="mailto:arasoezdemir@hotmail.com?subject=Hello%20Aras">Email me</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/aras-ozdemir-8432b3205/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </aside>
+
+    <main>
+      <section id="intro" class="section" aria-labelledby="intro-h">
+        <h2 id="intro-h">Intro</h2>
+        <div class="hero">
+          <img class="avatar" src="assets/profile.svg" alt="Portrait of Aras Ozdemir" />
+          <div>
+            <h1 style="margin:0">Hi, I'm <span style="color:var(--accent)">Aras Ozdemir</span>.</h1>
+            <p class="tagline">Engineer • Quality • R&D • Systems</p>
+            <p class="lede">Seeking a <strong>full-time role starting 2026</strong> in Mechanical and/or Biomedical Engineering. I build reliable systems, validate to ISO/DIN standards, and love solving messy, real-world problems.</p>
           </div>
         </div>
+      </section>
+
+      <section id="education" class="section" aria-labelledby="edu-h">
+        <h2 id="edu-h">Education</h2>
+        <div class="list">
+          <article>
+            <h3 style="margin:0">M.Eng., Mechanical Engineering — Cornell University</h3>
+            <p class="muted">2025–2026 • Relevant: Systems Engineering & Six Sigma (Black Belt), Innovation & Design of Biomedical Technologies</p>
+          </article>
+          <article>
+            <h3 style="margin:0">B.Sc., Biomedical & Mechanical Engineering — Pennsylvania State University</h3>
+            <p class="muted">2020–2024 • GPA: 3.55 • Relevant: Engineering Design, Fluid Mechanics, Thermodynamics, Mechanical Design, Numerical Simulations, Vibrations, Dynamics, Circuit Design</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="experience" class="section" aria-labelledby="exp-h">
+        <h2 id="exp-h">Work Experience</h2>
+        <div class="list" id="experienceList"><!-- populated by JS --></div>
+      </section>
+
+      <section id="projects" class="section" aria-labelledby="proj-h">
+        <h2 id="proj-h">Projects</h2>
+        <div class="filters" id="projectFilters"><!-- tags by JS --></div>
+        <div class="grid" id="projectGrid" role="list"><!-- cards by JS --></div>
+      </section>
+
+      <section id="skills" class="section" aria-labelledby="skills-h">
+        <h2 id="skills-h">Skills</h2>
+        <ul class="tags" id="skillTags"><!-- by JS --></ul>
+      </section>
+
+      <section id="activities" class="section" aria-labelledby="act-h">
+        <h2 id="act-h">Activities</h2>
+        <div class="activities" id="activityList"><!-- by JS --></div>
+      </section>
+
+      <section id="contact" class="section" aria-labelledby="contact-h">
+        <h2 id="contact-h">Contact</h2>
+        <p>Email: <a href="mailto:arasoezdemir@hotmail.com">arasoezdemir@hotmail.com</a></p>
+        <p>Phone: <a href="tel:+16072625047">(607) 262-5047</a></p>
+        <p>Location: Ithaca, NY • Open to relocation</p>
+      </section>
+
+      <p class="muted" style="margin: 20px 8px">© <span id="year"></span> Aras Ozdemir</p>
+    </main>
+  </div>
+
+  <!-- Modal (projects & activities share it) -->
+  <div class="modal" id="detailModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-backdrop" data-close></div>
+    <div class="panel" role="document">
+      <header>
+        <h3 id="modalTitle">&nbsp;</h3>
+        <button class="close" data-close aria-label="Close">✕</button>
+        <div class="muted" id="modalMeta"></div>
+      </header>
+      <div class="detail">
+        <div class="gallery" id="modalGallery"><!-- media --></div>
+        <div class="info">
+          <div id="modalSummary"></div>
+          <ul class="bullets" id="modalBullets"></ul>
+          <div class="links" id="modalLinks"></div>
+          <div id="modalTags" class="tags"></div>
+        </div>
       </div>
-    </section>
+    </div>
+  </div>
 
-    <section class="card" id="education">
-      <h2 class="section-title">Education</h2>
-      <div class="list">
-        <article>
-          <h3>MEng, Mechanical Engineering — Cornell University</h3>
-          <p class="muted">2025–2026</p>
-          <p>Relevant courses: Systems Engineering &amp; Six Sigma (Black Belt), Innovation and Design of Biomedical Technologies</p>
-
-          <h3>BSc, Mechanical Engineering &amp; Biomedical Engineering — Pennsylvania State University</h3>
-          <p class="muted">2020–2024</p>
-          <p>GPA: 3.55.
-            Relevant courses: Engineering Design, Fluid Mechanics, Thermodynamics, Mechanical Design, Numerical Simulations,
-            Vibration of Mechanical Systems, Dynamics, Circuit Design.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="card" id="experience">
-      <h2 class="section-title">Work Experience</h2>
-      <div class="list">
-        <article>
-          <h3>Quality Engineering Intern — Fresenius Kabi</h3>
-          <p class="muted">Nov. 2024–Aug. 2025</p>
-          <ul>
-            <li>Administered extensive testing of medical devices according to ISO and DIN norms</li>
-            <li>Worked with the FDA on guideline testing and documentation for the US market</li>
-            <li>Reviewed complex 3D models and produced technical drawings for the FDA</li>
-            <li>Updated existing drawings to ensure compliance with FDA regulations</li>
-            <li>Constructed automated testing devices in steel and polymers to minimize variables</li>
-            <li>Supported cross-functional product development aligned with quality and regulatory requirements</li>
-            <li>Optimized test procedures to increase efficiency and validation accuracy</li>
-          </ul>
-        </article>
-        <article>
-          <h3>Research Assistant — Freelance</h3>
-          <p class="muted">Jan. 2023–Jan. 2024</p>
-          <ul>
-            <li>Researched antibacterial properties of bacteriophages</li>
-            <li>Used advanced microscopy to study bacteriophage–bacteria interactions</li>
-            <li>Built a MATLAB GUI app to automate data analysis</li>
-            <li>Implemented filtering methods to reduce noise and produce clear visualizations</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
-    <section class="card" id="skills">
-      <h2 class="section-title">Skills</h2>
-      <ul class="tags">
-        <li>MATLAB</li><li>R</li><li>Python</li><li>COMSOL Multiphysics</li>
-        <li>SolidWorks</li><li>MS Office</li><li>LaTeX</li><li>HTML</li>
-      </ul>
-    </section>
-
-    <section class="card" id="interests">
-      <h2 class="section-title">Interests</h2>
-      <p>Traveling, Photography, F1 Racing, Swimming, Tennis, Video Games, Gym</p>
-    </section>
-
-    <section class="card" id="portfolio">
-      <h2 class="section-title">Projects</h2>
-      <div class="grid">
-        <figure class="shot">
-          <img src="assets/placeholder.jpg" alt="Portfolio item"/>
-          <figcaption>ASML Engineering Project, Ithaca, NY</figcaption>
-        </figure>
-
-        <figure class="shot" role="region" aria-label="B. Braun CAPSTONE, State College, PA">
-          <div class="gallery" data-current="0">
-            <div class="slide is-active" data-index="0" aria-roledescription="slide" aria-label="1 of 4">
-              <div class="video-frame">
-                <iframe
-                  src="https://www.youtube.com/embed/e7jPhOMTgnY?rel=0&modestbranding=1&playsinline=1&enablejsapi=1"
-                  title="B. Braun CAPSTONE video"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen loading="lazy"></iframe>
-              </div>
-            </div>
-            <div class="slide" data-index="1"><img src="assets/placeholder.jpg" alt="Prototype close-up"/></div>
-            <div class="slide" data-index="2"><img src="assets/placeholder.jpg" alt="Testing setup"/></div>
-            <div class="slide" data-index="3"><img src="assets/placeholder.jpg" alt="Final assembly"/></div>
-            <button class="nav prev" type="button">‹</button>
-            <button class="nav next" type="button">›</button>
-            <div class="dots">
-              <button class="dot is-active" data-to="0"></button>
-              <button class="dot" data-to="1"></button>
-              <button class="dot" data-to="2"></button>
-              <button class="dot" data-to="3"></button>
-            </div>
-          </div>
-          <figcaption>B. Braun CAPSTONE, State College, PA</figcaption>
-        </figure>
-
-        <figure class="shot">
-          <iframe src="assets/BME_401_FinalProject_Group4_Doc.pdf"
-            title="Numerical Simulation Project Report" class="pdf-viewer"></iframe>
-          <div class="pdf-download">
-            <a href="assets/BME_401_FinalProject_Group4_Doc.pdf" download>Download Full Report (PDF)</a>
-          </div>
-          <figcaption>Numerical Simulation Project, State College, PA</figcaption>
-        </figure>
-
-        <!-- New Project: Discovery Space Museum -->
-        <figure class="shot" role="region" aria-label="Exhibition — Discovery Space Museum, State College, PA">
-          <div class="gallery" data-current="0">
-            <div class="slide is-active" data-index="0">
-              <img src="assets/discovery-01.jpg" alt="Interactive exhibit overview" loading="lazy"/>
-            </div>
-            <div class="slide" data-index="1">
-              <img src="assets/discovery-02.jpg" alt="Close-up of hands-on mechanism" loading="lazy"/>
-            </div>
-            <div class="slide" data-index="2">
-              <img src="assets/discovery-03.jpg" alt="Children engaging with exhibit panels" loading="lazy"/>
-            </div>
-            <button class="nav prev" type="button">‹</button>
-            <button class="nav next" type="button">›</button>
-            <div class="dots">
-              <button class="dot is-active" data-to="0"></button>
-              <button class="dot" data-to="1"></button>
-              <button class="dot" data-to="2"></button>
-            </div>
-          </div>
-          <figcaption>Exhibition for The Discovery Space Museum, State College, PA</figcaption>
-        </figure>
-      </div>
-    </section>
-
-    <section class="card" id="contact">
-      <h2 class="section-title">Contact</h2>
-      <p>Email: <a href="mailto:arasoezdemir@hotmail.com">arasoezdemir@hotmail.com</a></p>
-      <p><a>Phone Number: (607) 262-5047</a></p>
-    </section>
-
-    <footer class="footer">
-      <p>© <span id="year"></span> Aras Ozdemir. All rights reserved.</p>
-    </footer>
-  </main>
-
-  <!-- Generalized Gallery Script -->
   <script>
-    (function () {
-      const galleries = Array.from(document.querySelectorAll('#portfolio .gallery'));
-      if (!galleries.length) return;
+    // ===== Data (easy to extend) =====
+    const experience = [
+      {
+        title: "Quality Engineering Intern — Fresenius Kabi",
+        when: "Nov 2024 – Aug 2025",
+        where: "Frankfurt, Hesse",
+        bullets: [
+          "Administered testing of medical devices to ISO & DIN norms.",
+          "Collaborated with FDA on guideline testing & US documentation.",
+          "Reviewed complex 3D models and produced technical drawings.",
+          "Updated drawings to ensure FDA compliance.",
+          "Built automated steel/polymer test rigs to reduce variables.",
+          "Supported cross‑functional development aligned with quality & regulatory.",
+          "Optimized test procedures to boost validation efficiency and accuracy."
+        ],
+        tags: ["ISO", "DIN", "FDA", "Validation", "Automation"],
+      },
+      {
+        title: "Research Assistant — The Pennsylvania State University",
+        when: "Jan 2023 – Jan 2024",
+        where: "State College, PA",
+        bullets: [
+          "Researched antibacterial properties of bacteriophages.",
+          "Used advanced microscopy to study interactions.",
+          "Built a MATLAB GUI app to automate data analysis.",
+          "Applied filtering methods to reduce noise and improve visualizations."
+        ],
+        tags: ["Microscopy", "MATLAB", "Signal Processing"],
+      },
+    ];
 
-      function setActive(gallery, i) {
-        const slides = Array.from(gallery.querySelectorAll('.slide'));
-        const dots = Array.from(gallery.querySelectorAll('.dot'));
-        const n = slides.length;
-        const idx = ((i % n) + n) % n;
-        gallery.dataset.current = String(idx);
+    const projects = [
+      {
+        id: "asml",
+        title: "ASML Engineering Project",
+        where: "Ithaca, NY",
+        when: "Aug 2025 – Present",
+        summary: "Designing electrical & mechanical infrastructure and control for a donated robotic handling arm, with safety and reliability at the core.",
+        bullets: [
+          "Implement electrical & mechanical infrastructure to support operation.",
+          "Develop control network with a focus on reliability and precision.",
+          "Perform risk assessments to define capability & safety limits.",
+          "Publish safety guidelines & operational protocols.",
+          "Build sensors & electronics to increase trajectory safety."
+        ],
+        tags: ["Robotics", "Controls", "Risk", "Safety"],
+        media: [
+          { type: "image", src: "assets/placeholder.jpg", alt: "Robotic arm placeholder" }
+        ],
+      },
+      {
+        id: "bbraun",
+        title: "B. Braun CAPSTONE",
+        where: "State College, PA",
+        when: "Jan 2024 – May 2024",
+        summary: "Solving secondary connector unclamping during medical procedures through iterative prototyping and testing.",
+        bullets: [
+          "Analyzed failure modes of secondary connector unclamping.",
+          "Designed & tested multiple prototypes to improve grip & reliability.",
+          "Delivered final design that met sponsor expectations and influenced standards.",
+          "Prepared prototype and documentation toward FDA review."
+        ],
+        tags: ["Medical Devices", "Prototyping", "Testing", "FDA"],
+        media: [
+          { type: "youtube", src: "https://www.youtube.com/embed/e7jPhOMTgnY?rel=0&modestbranding=1&playsinline=1" },
+          { type: "image", src: "assets/placeholder.jpg", alt: "Prototype close-up" },
+          { type: "image", src: "assets/placeholder.jpg", alt: "Testing setup" },
+          { type: "image", src: "assets/placeholder.jpg", alt: "Final assembly" },
+        ],
+        links: [
+          { label: "Sponsor", href: "https://www.bbraun.com" }
+        ]
+      },
+      {
+        id: "discovery",
+        title: "Exhibition — Discovery Space Museum",
+        where: "State College, PA",
+        when: "Aug 2023 – Dec 2023",
+        summary: "Interactive exhibit designed to spark curiosity while meeting safety, reliability, and durability standards.",
+        bullets: [
+          "Designed interactive mechanisms for hands‑on learning.",
+          "Ensured safety & durability of all mechanical elements.",
+        ],
+        tags: ["Exhibit", "Design", "Safety"],
+        media: [
+          { type: "image", src: "assets/discovery-01.jpg", alt: "Exhibit overview" },
+          { type: "image", src: "assets/discovery-02.jpg", alt: "Mechanism close‑up" },
+          { type: "image", src: "assets/discovery-03.jpg", alt: "Children engaging with panels" },
+        ],
+      },
+      {
+        id: "numerical",
+        title: "Numerical Simulation Project",
+        where: "State College, PA",
+        when: "Jan 2023 – May 2023",
+        summary: "COMSOL simulations of complex stent geometries (e.g., elliptical cross‑sections) to study mechanics and fluid dynamics.",
+        bullets: [
+          "Modeled stent geometries and boundary conditions.",
+          "Predicted fluid flow and stress impact on stents.",
+        ],
+        tags: ["COMSOL", "CFD", "FEA"],
+        media: [
+          { type: "pdf", src: "assets/BME_401_FinalProject_Group4_Doc.pdf", label: "Read full report (PDF)" }
+        ],
+      },
+    ];
 
-        slides.forEach((s, k) => s.classList.toggle('is-active', k === idx));
-        dots.forEach((d, k) => {
-          const active = k === idx;
-          d.classList.toggle('is-active', active);
-          d.setAttribute('aria-selected', active ? 'true' : 'false');
-        });
+    const activities = [
+      { id: "travel", title: "Travel", when: "Ongoing", summary: "Exploring new places informs my design intuition and empathy.", tags: ["Curiosity"], media: [] },
+      { id: "f1", title: "F1 Racing (fan)", when: "Since 2015", summary: "Systems thinking & reliability obsessions translate to my engineering approach.", tags: ["Motorsport"], media: [] },
+      { id: "sports", title: "Swimming & Tennis", when: "Ongoing", summary: "Discipline and feedback loops.", tags: ["Wellness"], media: [] },
+      { id: "gaming", title: "Video Games", when: "Ongoing", summary: "Rapid problem solving & strategy under constraints.", tags: ["Strategy"], media: [] },
+      { id: "gym", title: "Gym", when: "Ongoing", summary: "Consistency, progressive overload, measured improvement.", tags: ["Habits"], media: [] },
+    ];
 
-        slides.forEach((s, k) => {
-          if (k !== idx) {
-            const iframe = s.querySelector('iframe');
-            if (iframe && iframe.contentWindow) {
-              iframe.contentWindow.postMessage(
-                JSON.stringify({ event: 'command', func: 'pauseVideo', args: '' }),
-                '*'
-              );
-            }
-          }
-        });
-      }
+    const skills = [
+      "MATLAB", "R", "Python", "COMSOL Multiphysics", "SolidWorks", "MS Office", "LaTeX", "HTML",
+      "FDA Regulation", "ISO Standards", "Verification", "Validation", "Design Controls", "Risk Management",
+      "Decision‑Making", "Data Analysis", "Cross‑Cultural Competence",
+      "English (Native)", "German (Native)", "Turkish (Intermediate)", "Spanish (Intermediate)"
+    ];
 
-      const current = g => parseInt(g.dataset.current || '0', 10);
+    // ===== Helpers =====
+    const $ = (sel, el=document) => el.querySelector(sel);
+    const $$ = (sel, el=document) => Array.from(el.querySelectorAll(sel));
 
-      galleries.forEach(gallery => {
-        const prev = gallery.querySelector('.nav.prev');
-        const next = gallery.querySelector('.nav.next');
-        const dots = Array.from(gallery.querySelectorAll('.dot'));
-
-        prev?.addEventListener('click', () => setActive(gallery, current(gallery) - 1));
-        next?.addEventListener('click', () => setActive(gallery, current(gallery) + 1));
-        dots.forEach(d => d.addEventListener('click', () => setActive(gallery, parseInt(d.dataset.to, 10))));
+    function el(tag, attrs={}, children=[]) {
+      const node = document.createElement(tag);
+      Object.entries(attrs).forEach(([k,v]) => {
+        if (k === 'class') node.className = v; else if (k === 'html') node.innerHTML = v; else node.setAttribute(k, v);
       });
-    })();
+      children.forEach(c => node.append(c));
+      return node;
+    }
 
-    (function () {
-      const y = document.getElementById('year');
-      if (y) y.textContent = new Date().getFullYear();
-    })();
+    // ===== Render Experience =====
+    function renderExperience() {
+      const root = document.getElementById('experienceList');
+      root.innerHTML = '';
+      experience.forEach(x => {
+        const art = el('article', { class: 'card' }, [
+          el('div', { class: 'body' }, [
+            el('h3', {}, [document.createTextNode(x.title)]),
+            el('p', { class: 'muted' }, [document.createTextNode(`${x.when} • ${x.where}`)]),
+            el('ul', {}, x.bullets.map(b => el('li', {}, [document.createTextNode(b)]))),
+            el('div', { class: 'tags', role: 'list' }, x.tags.map(t => el('span', { class: 'chip', role: 'listitem' }, [document.createTextNode(t)])))
+          ])
+        ]);
+        root.append(art);
+      });
+    }
+
+    // ===== Render Skills =====
+    function renderSkills() {
+      const ul = document.getElementById('skillTags');
+      ul.innerHTML = '';
+      skills.forEach(s => ul.append(el('li', { class: 'chip' }, [document.createTextNode(s)])));
+    }
+
+    // ===== Projects (grid + filters + modal) =====
+    function distinctTags(arr) { return Array.from(new Set(arr.flatMap(p => p.tags || []))).sort(); }
+
+    let activeFilters = new Set();
+
+    function renderProjectFilters() {
+      const root = document.getElementById('projectFilters');
+      root.innerHTML = '';
+      distinctTags(projects).forEach(tag => {
+        const btn = el('button', { class: 'filter', 'aria-pressed': 'false' }, [document.createTextNode(tag)]);
+        btn.addEventListener('click', () => {
+          if (activeFilters.has(tag)) activeFilters.delete(tag); else activeFilters.add(tag);
+          btn.setAttribute('aria-pressed', activeFilters.has(tag) ? 'true' : 'false');
+          renderProjectGrid();
+        });
+        root.append(btn);
+      });
+      // Quick clear
+      const clear = el('button', { class: 'filter', title: 'Clear filters' }, [document.createTextNode('Clear')]);
+      clear.addEventListener('click', () => { activeFilters = new Set(); $$('#projectFilters .filter').forEach(b => b.setAttribute('aria-pressed', 'false')); renderProjectGrid(); });
+      root.append(clear);
+    }
+
+    function passesFilters(p) {
+      if (!activeFilters.size) return true;
+      return (p.tags || []).some(t => activeFilters.has(t));
+    }
+
+    function cardForProject(p) {
+      const card = el('article', { class: 'card', role: 'listitem' });
+      const thumb = el('div', { class: 'thumb' }, [document.createTextNode(p.title.split(' ')[0])]);
+      const body = el('div', { class: 'body' }, [
+        el('h3', {}, [document.createTextNode(p.title)]),
+        el('div', { class: 'meta' }, [ el('span', { class: 'chip' }, [document.createTextNode(p.where)]), el('span', { class: 'chip' }, [document.createTextNode(p.when)]) ]),
+        el('div', { class: 'tags', role: 'list' }, (p.tags||[]).map(t => el('span', { class: 'chip', role: 'listitem' }, [document.createTextNode(t)])))
+      ]);
+      const btn = el('button', { 'aria-label': `Open details for ${p.title}` });
+      btn.addEventListener('click', () => openProject(p.id));
+      card.append(thumb, body, btn);
+      return card;
+    }
+
+    function renderProjectGrid() {
+      const grid = document.getElementById('projectGrid');
+      grid.innerHTML = '';
+      projects.filter(passesFilters).forEach(p => grid.append(cardForProject(p)));
+      if (!grid.children.length) grid.append(el('p', { class: 'muted' }, [document.createTextNode('No projects match the selected filters.')]))
+    }
+
+    // ===== Activities =====
+    function renderActivities() {
+      const root = document.getElementById('activityList');
+      root.innerHTML = '';
+      activities.forEach(a => {
+        const row = el('div', { class: 'activity' }, [
+          el('span', { class: 'chip' }, [document.createTextNode(a.tags?.[0] || 'Activity')]),
+          el('div', {}, [ el('div', { class: 'title' }, [document.createTextNode(a.title)]), el('div', { class: 'muted when' }, [document.createTextNode(a.when)]) ]),
+          el('button', { class: 'btn btn-ghost', 'aria-label': `Open details for ${a.title}` }, [document.createTextNode('Open')])
+        ]);
+        $('button', row).addEventListener('click', () => openActivity(a.id));
+        root.append(row);
+      });
+    }
+
+    // ===== Modal controls =====
+    const modal = document.getElementById('detailModal');
+    const mTitle = document.getElementById('modalTitle');
+    const mMeta  = document.getElementById('modalMeta');
+    const mGallery = document.getElementById('modalGallery');
+    const mSummary = document.getElementById('modalSummary');
+    const mBullets = document.getElementById('modalBullets');
+    const mLinks = document.getElementById('modalLinks');
+    const mTags = document.getElementById('modalTags');
+
+    function openModal() {
+      modal.setAttribute('open', '');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      modal.removeAttribute('open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      // stop any YouTube playback
+      $$('#modalGallery iframe').forEach(frame => {
+        frame.contentWindow?.postMessage(JSON.stringify({event: 'command', func: 'pauseVideo', args: ''}), '*');
+      });
+      // cleanup
+      mGallery.innerHTML = ''; mSummary.innerHTML = ''; mBullets.innerHTML = ''; mLinks.innerHTML = ''; mTags.innerHTML=''; mTitle.textContent=''; mMeta.textContent='';
+    }
+
+    modal.addEventListener('click', (e) => { if (e.target.hasAttribute('data-close')) closeModal(); });
+    modal.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+    $$('[data-close]', modal).forEach(b => b.addEventListener('click', closeModal));
+
+    function populateModal({title, where, when, summary, bullets, tags, media, links}) {
+      mTitle.textContent = title;
+      mMeta.textContent = `${when || ''}${when && where ? ' • ' : ''}${where || ''}`;
+      mSummary.textContent = summary || '';
+      (bullets||[]).forEach(b => mBullets.append(el('li', {}, [document.createTextNode(b)])));
+      (tags||[]).forEach(t => mTags.append(el('span', { class: 'chip' }, [document.createTextNode(t)])));
+      (links||[]).forEach(l => mLinks.append(el('a', { class: 'btn', href: l.href, target: '_blank', rel: 'noopener' }, [document.createTextNode(l.label)])));
+
+      if (!media || !media.length) {
+        mGallery.append(el('div', { style: 'display:grid;place-items:center;height:360px;color:#6b7280' }, [document.createTextNode('No media')]));
+      } else {
+        const first = media[0];
+        if (first.type === 'youtube') {
+          mGallery.append(el('iframe', { src: first.src, title: `${title} video`, allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share', allowfullscreen: '' }));
+        } else if (first.type === 'image') {
+          mGallery.append(el('img', { src: first.src, alt: first.alt || title }));
+        } else if (first.type === 'pdf') {
+          mGallery.append(el('iframe', { src: first.src, title: `${title} PDF` }));
+          mLinks.append(el('a', { class: 'btn', href: first.src, download: '' }, [document.createTextNode(first.label || 'Download PDF')]));
+        }
+      }
+    }
+
+    // Deep-linking: #project/{id} or #activity/{id}
+    function openProject(id) {
+      const p = projects.find(x => x.id === id);
+      if (!p) return; populateModal(p); openModal(); location.hash = `#project/${id}`;
+    }
+    function openActivity(id) {
+      const a = activities.find(x => x.id === id);
+      if (!a) return; populateModal({ title: a.title, where: '', when: a.when, summary: a.summary, bullets: [], tags: a.tags, media: a.media }); openModal(); location.hash = `#activity/${id}`;
+    }
+
+    function handleHash() {
+      const h = location.hash.slice(1);
+      if (!h) return;
+      const [type, id] = h.split('/');
+      if (type === 'project') openProject(id);
+      if (type === 'activity') openActivity(id);
+    }
+
+    // ===== Init =====
+    renderExperience();
+    renderProjectFilters();
+    renderProjectGrid();
+    renderSkills();
+    renderActivities();
+    document.getElementById('year').textContent = new Date().getFullYear();
+    window.addEventListener('hashchange', handleHash);
+    handleHash();
+  </script>
+
+  <!-- Person schema for SEO -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Aras Ozdemir",
+      "jobTitle": "Mechanical & Biomedical Engineer",
+      "url": "",
+      "email": "mailto:arasoezdemir@hotmail.com",
+      "telephone": "+16072625047",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "114 Veterans Pl, Apt D",
+        "addressLocality": "Ithaca",
+        "addressRegion": "NY",
+        "postalCode": "14850",
+        "addressCountry": "US"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/in/aras-ozdemir-8432b3205/"
+      ]
+    }
   </script>
 </body>
 </html>
