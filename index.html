@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Aras Ozdemir — Engineer</title>
-  <meta name="description" content="Portfolio of Aras Ozdemir — Mechanical & Biomedical Engineer building reliable systems." />
+  <meta name="description" content="Portfolio of Aras Ozdemir — Quality & Process Engineer | Mechanical & Biomedical Engineering." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -526,18 +526,54 @@
     }
     .edu-school {
       font-weight: 600;
-      font-size: 1.05rem;
-      margin-bottom: 4px;
+      font-size: 1.1rem;
+      margin-bottom: 2px;
+    }
+    .edu-college {
+      color: var(--text-tertiary);
+      font-size: 0.85rem;
+      margin-bottom: 6px;
     }
     .edu-degree {
       color: var(--text-secondary);
-      font-weight: 300;
+      font-weight: 400;
+      font-size: 0.95rem;
+      line-height: 1.5;
     }
-    .edu-meta {
-      margin-top: 10px;
-      font-size: 0.85rem;
+    .edu-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+      align-items: center;
+    }
+    .edu-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .edu-badge.gpa {
+      background: rgba(79, 143, 247, 0.1);
+      color: var(--accent);
+      border: 1px solid rgba(79, 143, 247, 0.2);
+    }
+    .edu-badge.date {
+      background: var(--bg);
       color: var(--text-tertiary);
-      line-height: 1.7;
+      border: 1px solid var(--border-subtle);
+      font-family: var(--mono);
+      font-weight: 400;
+      font-size: 0.8rem;
+    }
+    .edu-badge.cert {
+      background: rgba(240, 198, 116, 0.08);
+      color: var(--warm);
+      border: 1px solid rgba(240, 198, 116, 0.18);
     }
 
     /* ===== EXPERIENCE ===== */
@@ -1081,18 +1117,18 @@
     <div class="hero-bg-shape one"></div>
     <div class="hero-bg-shape two"></div>
 
-    <div class="hero-eyebrow reveal">Mechanical & Biomedical Engineer</div>
-    <h1 class="reveal reveal-delay-1">Building <em>reliable</em> systems that matter.</h1>
+    <div class="hero-eyebrow reveal">Quality & Process Engineer</div>
+    <h1 class="reveal reveal-delay-1">Engineering <em>quality</em> into every system.</h1>
     <p class="hero-sub reveal reveal-delay-2">
-      I'm Aras — an engineer who validates to ISO/DIN standards, prototypes medical devices, and turns messy problems into elegant solutions. Seeking full-time roles starting 2026.
+      I'm Aras — an engineer who builds robust quality systems, drives process validation to ISO 13485 & ISO 9001 standards, and turns complex compliance challenges into streamlined, repeatable workflows. Seeking full-time roles starting 2026.
     </p>
     <div class="hero-actions reveal reveal-delay-3">
       <a class="btn-primary" href="assets/Ozdemir_Aras_Resume.pdf" download>
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Download Résumé
       </a>
-      <a class="btn-outline" href="mailto:arasoezdemir@hotmail.com?subject=Hello%20Aras">Get in Touch</a>
-      <a class="btn-outline" href="https://www.linkedin.com/in/aras-ozdemir-8432b3205/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a class="btn-outline" href="mailto:ao473@cornell.edu?subject=Hello%20Aras">Get in Touch</a>
+      <a class="btn-outline" href="https://www.linkedin.com/in/aras-ozdemir/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
     </div>
 
     <div class="hero-scroll-hint">
@@ -1113,10 +1149,10 @@
       </div>
       <div class="reveal-right">
         <p class="about-text">
-          I'm a <strong>Cornell M.Eng. student</strong> with a B.Sc. from Penn State in both Biomedical and Mechanical Engineering. My work sits at the intersection of <strong>quality systems</strong>, <strong>medical device R&D</strong>, and <strong>hands-on prototyping</strong>.
+          I'm a <strong>Cornell M.Eng. student in Mechanical Engineering</strong> with dual B.Sc. degrees from Penn State in Biomedical and Mechanical Engineering. My work sits at the intersection of <strong>quality systems</strong>, <strong>process engineering</strong>, and <strong>hands-on validation</strong> — building the frameworks that make products safe, compliant, and manufacturable.
         </p>
         <p class="about-text" style="margin-top:16px;">
-          At <strong>Fresenius Kabi</strong>, I tested medical devices to ISO & DIN norms, collaborated with the FDA on documentation, and built automated test rigs. I bring that same rigor — precise, standards-driven, detail-obsessed — to every project I take on.
+          At <strong>Fresenius Kabi</strong>, I supported 510(k) submissions, performed root cause analysis on device complaints, revised 40+ technical drawings for FDA and ASME compliance, and engineered automated test rigs that cut validation labor by ~28 hours per run. I work within <strong>ISO 13485</strong> and <strong>ISO 9001</strong> quality management systems and bring that same rigor — precise, standards-driven, detail-obsessed — to every project.
         </p>
         <p class="about-text" style="margin-top:16px;">
           I'm based in <strong>Ithaca, NY</strong> and open to relocation anywhere for the right opportunity.
@@ -1124,11 +1160,11 @@
 
         <div class="about-stats">
           <div class="stat reveal reveal-delay-1">
-            <div class="stat-num">6+</div>
-            <div class="stat-label">Years Engineering</div>
+            <div class="stat-num">2+</div>
+            <div class="stat-label">Years Experience</div>
           </div>
           <div class="stat reveal reveal-delay-2">
-            <div class="stat-num">2</div>
+            <div class="stat-num">3</div>
             <div class="stat-label">Degrees</div>
           </div>
           <div class="stat reveal reveal-delay-3">
@@ -1150,16 +1186,26 @@
         <div class="edu-icon">🎓</div>
         <div>
           <div class="edu-school">Cornell University</div>
+          <div class="edu-college">David A. Duffield College of Engineering</div>
           <div class="edu-degree">M.Eng., Mechanical Engineering</div>
-          <div class="edu-meta">2025–2026 · Systems Engineering & Six Sigma (Black Belt), Innovation & Design of Biomedical Technologies</div>
+          <div class="edu-row">
+            <span class="edu-badge gpa">GPA: 3.89</span>
+            <span class="edu-badge date">2025 – 2026 (Expected)</span>
+            <span class="edu-badge cert">Lean Six Sigma Black Belt</span>
+          </div>
         </div>
       </div>
       <div class="edu-card reveal reveal-delay-2">
         <div class="edu-icon">🏛️</div>
         <div>
           <div class="edu-school">Pennsylvania State University</div>
-          <div class="edu-degree">B.Sc., Biomedical & Mechanical Engineering</div>
-          <div class="edu-meta">2020–2024 · GPA: 3.55 · Engineering Design, Fluid Mechanics, Thermodynamics, Mechanical Design, Numerical Simulations, Vibrations, Circuit Design</div>
+          <div class="edu-college">College of Engineering</div>
+          <div class="edu-degree">B.Sc., Biomedical Engineering</div>
+          <div class="edu-degree">B.Sc., Mechanical Engineering</div>
+          <div class="edu-row">
+            <span class="edu-badge gpa">GPA: 3.55</span>
+            <span class="edu-badge date">2020 – 2024</span>
+          </div>
         </div>
       </div>
     </div>
@@ -1207,15 +1253,15 @@
     <h2 class="section-title reveal reveal-delay-1">Let's <em>connect</em></h2>
     <p class="contact-sub reveal reveal-delay-2">I'm actively looking for full-time engineering roles starting 2026. Whether you have an opportunity, a question, or just want to chat — reach out.</p>
     <div class="contact-links reveal reveal-delay-3">
-      <a class="contact-card" href="mailto:arasoezdemir@hotmail.com">
+      <a class="contact-card" href="mailto:ao473@cornell.edu">
         <div class="icon">✉️</div>
-        <div><div class="label">Email</div><div class="value">arasoezdemir@hotmail.com</div></div>
+        <div><div class="label">Email</div><div class="value">ao473@cornell.edu</div></div>
       </a>
       <a class="contact-card" href="tel:+16072625047">
         <div class="icon">📞</div>
         <div><div class="label">Phone</div><div class="value">(607) 262-5047</div></div>
       </a>
-      <a class="contact-card" href="https://www.linkedin.com/in/aras-ozdemir-8432b3205/" target="_blank" rel="noopener noreferrer">
+      <a class="contact-card" href="https://www.linkedin.com/in/aras-ozdemir/" target="_blank" rel="noopener noreferrer">
         <div class="icon">🔗</div>
         <div><div class="label">LinkedIn</div><div class="value">Aras Ozdemir</div></div>
       </a>
@@ -1254,8 +1300,8 @@
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "Aras Ozdemir",
-    "jobTitle": "Mechanical & Biomedical Engineer",
-    "email": "mailto:arasoezdemir@hotmail.com",
+    "jobTitle": "Quality & Process Engineer",
+    "email": "mailto:ao473@cornell.edu",
     "telephone": "+16072625047",
     "address": {
       "@type": "PostalAddress",
@@ -1263,7 +1309,7 @@
       "addressRegion": "NY",
       "addressCountry": "US"
     },
-    "sameAs": ["https://www.linkedin.com/in/aras-ozdemir-8432b3205/"]
+    "sameAs": ["https://www.linkedin.com/in/aras-ozdemir/"]
   }
   </script>
 
@@ -1271,68 +1317,93 @@
     // ===== DATA =====
     const experience = [
       {
-        role: "Quality Engineering Intern",
+        role: "Engineering Lead",
+        company: "ASML Capstone Project — Cornell",
+        when: "Aug 2025 – Present",
+        where: "Ithaca, NY",
+        bullets: [
+          "Lead an ASML-sponsored project managing integration of an industrial robotic handling arm for safe laboratory deployment.",
+          "Design and implement electrical and mechanical support systems to enable safe operation.",
+          "Perform dynamic force simulations in MATLAB to evaluate loading conditions and structural safety margins.",
+          "Conduct FMEA-based risk assessments to identify operational hazards and define mitigation strategies.",
+          "Architect a sensor-integrated fail-safe shutdown system to immediately disable the robot under unsafe trajectory conditions."
+        ],
+        tags: ["FMEA", "MATLAB", "Risk Management", "Systems Engineering", "Robotics"],
+      },
+      {
+        role: "Quality Engineer",
         company: "Fresenius Kabi",
         when: "Nov 2024 – Aug 2025",
-        where: "Frankfurt, Hesse",
+        where: "Frankfurt, Germany",
         bullets: [
-          "Administered testing of medical devices to ISO & DIN norms.",
-          "Collaborated with FDA on guideline testing & US documentation.",
-          "Reviewed complex 3D models and produced technical drawings.",
-          "Updated drawings to ensure FDA compliance.",
-          "Built automated steel/polymer test rigs to reduce variables.",
-          "Supported cross-functional development aligned with quality & regulatory.",
-          "Optimized test procedures to boost validation efficiency and accuracy."
+          "Supported preparation of Class II 510(k) submission documentation, contributing to successful regulatory filing.",
+          "Investigated and resolved reported device complaints, performing root cause analysis to support corrective actions (CAPA).",
+          "Revised 40+ technical drawings for FDA 21 CFR Part 820 and ASME Y14.5 compliance, standardizing GD&T tolerances.",
+          "Engineered an automated magnetic hatch durability tester (10,000 cycles), reducing ~28 manual labor hours per validation run and improving repeatability.",
+          "Reengineered validation test workflows (IQ/OQ/PQ) to eliminate steps and enable material reuse, improving efficiency by ~20%."
         ],
-        tags: ["ISO", "DIN", "FDA", "Validation", "Automation"],
+        tags: ["ISO 13485", "ISO 9001", "510(k)", "CAPA", "GD&T", "IQ/OQ/PQ", "FDA"],
+      },
+      {
+        role: "Design Engineer",
+        company: "B. Braun Medical Inc.",
+        when: "Jan 2024 – May 2024",
+        where: "State College, PA",
+        bullets: [
+          "Analyzed failure modes of a secondary connector unclamping during procedures using mechanical testing.",
+          "Designed and iterated CAD prototypes supported by COMSOL-based FEA simulations to optimize stress distribution.",
+          "Improved connector grip strength by 48% while maintaining customer-specified flow rate requirements.",
+          "Conducted validation testing and ensured documentation complied with FDA design control and regulatory standards."
+        ],
+        tags: ["Design Controls", "FEA", "COMSOL", "Prototyping", "FDA"],
       },
       {
         role: "Research Assistant",
-        company: "Penn State University",
+        company: "The Pennsylvania State University",
         when: "Jan 2023 – Jan 2024",
         where: "State College, PA",
         bullets: [
-          "Researched antibacterial properties of bacteriophages.",
-          "Used advanced microscopy to study interactions.",
-          "Built a MATLAB GUI app to automate data analysis.",
-          "Applied filtering methods to reduce noise and improve visualizations."
+          "Conducted extensive research on antibiotic properties of bacteriophages, studying phage-bacteria interactions.",
+          "Utilized advanced microscopy techniques for high-resolution photography of bacteriophage-bacteria interactions.",
+          "Developed a MATLAB application with a graphical user interface, streamlining data analysis through automation.",
+          "Implemented advanced filtering methods to minimize data noise, generating clear and informative visualizations that enhanced data interpretation."
         ],
-        tags: ["Microscopy", "MATLAB", "Signal Processing"],
+        tags: ["MATLAB", "Microscopy", "Data Analysis", "Signal Processing", "R"],
       },
     ];
 
     const projects = [
       {
         id: "asml",
-        title: "ASML Engineering Project",
+        title: "ASML Robotic Arm Integration",
         where: "Ithaca, NY",
         when: "Aug 2025 – Present",
-        summary: "Designing electrical & mechanical infrastructure and control for a donated robotic handling arm, with safety and reliability at the core.",
+        summary: "Leading an ASML-sponsored capstone project to integrate an industrial robotic handling arm for safe laboratory deployment, including fail-safe systems and FMEA-based risk management.",
         bullets: [
-          "Implement electrical & mechanical infrastructure to support operation.",
-          "Develop control network with a focus on reliability and precision.",
-          "Perform risk assessments to define capability & safety limits.",
-          "Publish safety guidelines & operational protocols.",
-          "Build sensors & electronics to increase trajectory safety."
+          "Design electrical & mechanical support systems for safe robotic operation.",
+          "Perform dynamic force simulations in MATLAB to evaluate loading and safety margins.",
+          "Conduct FMEA-based risk assessments to identify hazards and define mitigations.",
+          "Architect a sensor-integrated fail-safe shutdown system for unsafe trajectory detection.",
+          "Publish safety guidelines & operational protocols for lab deployment."
         ],
-        tags: ["Robotics", "Controls", "Risk", "Safety"],
+        tags: ["Robotics", "FMEA", "MATLAB", "Safety"],
         gradient: "linear-gradient(135deg, #1a1f35, #0d1a2d)",
         emoji: "🤖",
         media: [{ type: "image", src: "assets/placeholder.jpg", alt: "Robotic arm" }],
       },
       {
         id: "bbraun",
-        title: "B. Braun Capstone",
+        title: "B. Braun Capstone — Connector Redesign",
         where: "State College, PA",
         when: "Jan 2024 – May 2024",
-        summary: "Solving secondary connector unclamping during medical procedures through iterative prototyping and testing.",
+        summary: "Redesigned a medical connector to solve unclamping failures, achieving a 48% grip strength improvement through FEA-driven iterative prototyping.",
         bullets: [
-          "Analyzed failure modes of secondary connector unclamping.",
-          "Designed & tested multiple prototypes to improve grip & reliability.",
-          "Delivered final design that met sponsor expectations and influenced standards.",
-          "Prepared prototype and documentation toward FDA review."
+          "Analyzed failure modes of secondary connector unclamping using mechanical testing.",
+          "Iterated CAD prototypes with COMSOL-based FEA to optimize stress distribution.",
+          "Improved connector grip strength by 48% while maintaining flow rate requirements.",
+          "Ensured documentation complied with FDA design control and regulatory standards."
         ],
-        tags: ["Medical Devices", "Prototyping", "Testing", "FDA"],
+        tags: ["Design Controls", "Prototyping", "FEA", "FDA"],
         gradient: "linear-gradient(135deg, #1f1a2e, #1a1025)",
         emoji: "🏥",
         media: [
@@ -1359,13 +1430,13 @@
       },
       {
         id: "numerical",
-        title: "Numerical Simulation — Stent CFD",
+        title: "Numerical Simulation — Stent CFD/FEA",
         where: "State College, PA",
         when: "Jan 2023 – May 2023",
         summary: "COMSOL simulations of complex stent geometries to study mechanics and fluid dynamics.",
         bullets: [
-          "Modeled stent geometries and boundary conditions.",
-          "Predicted fluid flow and stress impact on stents."
+          "Modeled stent geometries and boundary conditions in COMSOL Multiphysics.",
+          "Predicted fluid flow and stress impact on stents using coupled CFD/FEA analysis."
         ],
         tags: ["COMSOL", "CFD", "FEA"],
         gradient: "linear-gradient(135deg, #2a1f1a, #1a150d)",
@@ -1377,10 +1448,10 @@
     ];
 
     const skillGroups = [
-      { name: "Software & Tools", items: ["MATLAB", "Python", "R", "COMSOL Multiphysics", "SolidWorks", "LaTeX", "HTML/CSS", "MS Office"] },
-      { name: "Engineering & Quality", items: ["FDA Regulation", "ISO Standards", "DIN Standards", "Verification & Validation", "Design Controls", "Risk Management", "Six Sigma (Black Belt)"] },
-      { name: "Core Strengths", items: ["Data Analysis", "Cross-Cultural Competence", "Decision-Making", "Technical Writing", "Prototyping"] },
-      { name: "Languages", items: ["English (Native)", "German (Native)", "Turkish (Intermediate)", "Spanish (Intermediate)"] },
+      { name: "Software & Tools", items: ["MATLAB", "Python", "R", "COMSOL Multiphysics", "SolidWorks", "ANSYS", "Excel", "LaTeX", "HTML/CSS"] },
+      { name: "Quality & Regulatory", items: ["ISO 13485", "ISO 9001", "FDA 21 CFR 820", "510(k) Submissions", "CAPA", "FMEA / DFMEA", "NCR", "DHF", "Design Controls", "IQ/OQ/PQ Validation"] },
+      { name: "Engineering", items: ["GD&T (ASME Y14.5)", "Risk Management", "Data Analysis", "Process Optimization", "Technical Drawing", "Prototyping"] },
+      { name: "Certifications & Languages", items: ["Lean Six Sigma Black Belt", "English (Fluent)", "German (Fluent)", "Turkish (Intermediate)", "Spanish (Intermediate)"] },
     ];
 
     const activities = [
@@ -1397,7 +1468,7 @@
       const c = document.getElementById('timelineContainer');
       experience.forEach((x, i) => {
         const item = document.createElement('div');
-        item.className = `timeline-item reveal reveal-delay-${i + 1}`;
+        item.className = `timeline-item reveal reveal-delay-${Math.min(i + 1, 4)}`;
         item.innerHTML = `
           <div class="timeline-dot"></div>
           <div class="timeline-header">
