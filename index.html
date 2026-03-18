@@ -523,6 +523,13 @@
       font-size: 1.6rem;
       background: var(--bg);
       border: 1px solid var(--border-subtle);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .edu-icon img {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
     }
     .edu-school {
       font-weight: 600;
@@ -940,120 +947,272 @@
       border-top: 1px solid var(--border-subtle);
     }
 
-    /* ===== PROJECT MODAL ===== */
-    .modal-overlay {
+    /* ===== PAGE TRANSITION ===== */
+    .page-main { transition: opacity 0.5s var(--ease-out-expo), transform 0.5s var(--ease-out-expo); }
+    .page-main.exiting {
+      opacity: 0;
+      transform: scale(0.97);
+      pointer-events: none;
+    }
+
+    /* Card expand origin marker */
+    .project-card.expanding {
+      z-index: 50;
+      position: relative;
+    }
+    .project-card.expanding .project-thumb-overlay { opacity: 0 !important; }
+
+    /* Full-screen transition flash */
+    .page-transition-cover {
       position: fixed;
       inset: 0;
-      z-index: 200;
-      background: rgba(4, 5, 7, 0.75);
-      backdrop-filter: blur(8px);
-      display: none;
-      place-items: center;
+      z-index: 150;
+      pointer-events: none;
       opacity: 0;
-      transition: opacity 0.3s;
     }
-    .modal-overlay.open {
-      display: grid;
-      opacity: 1;
+    .page-transition-cover.active {
+      animation: coverFlash 0.7s var(--ease-out-expo) forwards;
+    }
+    @keyframes coverFlash {
+      0%   { opacity: 0; }
+      30%  { opacity: 1; }
+      100% { opacity: 0; }
     }
 
-    .modal-panel {
-      width: min(960px, 94vw);
-      max-height: 90vh;
+    /* ===== PROJECT DETAIL PAGE ===== */
+    .project-page {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: var(--bg);
       overflow-y: auto;
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 32px;
-      box-shadow: 0 60px 120px rgba(0,0,0,0.5);
-      transform: translateY(12px) scale(0.97);
-      transition: transform 0.4s var(--ease-out-expo), opacity 0.3s;
+      overflow-x: hidden;
+      display: none;
+      opacity: 0;
     }
-    .modal-overlay.open .modal-panel {
-      transform: translateY(0) scale(1);
+    .project-page.open {
+      display: block;
+      animation: projectPageIn 0.6s 0.25s var(--ease-out-expo) forwards;
+    }
+    .project-page.closing {
+      animation: projectPageOut 0.45s var(--ease-out-expo) forwards;
+    }
+    @keyframes projectPageIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes projectPageOut {
+      from { opacity: 1; transform: translateY(0); }
+      to   { opacity: 0; transform: translateY(20px); }
     }
 
-    .modal-header {
+    .pp-hero {
+      position: relative;
+      min-height: 50vh;
       display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 24px;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 60px 80px 48px;
+      overflow: hidden;
     }
-    .modal-header h3 {
-      font-family: var(--serif);
-      font-size: 1.8rem;
-      font-weight: 400;
+    .pp-hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
     }
-    .modal-close {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text-primary);
-      font-size: 1.2rem;
-      cursor: pointer;
+    .pp-hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(8,10,12,0.3) 0%, var(--bg) 100%);
+    }
+    /* Animation placeholder slot */
+    .pp-hero-visual {
+      position: absolute;
+      inset: 0;
       display: grid;
       place-items: center;
-      transition: background 0.2s;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .pp-hero-visual img,
+    .pp-hero-visual video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.3;
+    }
+    .pp-hero-visual .placeholder-anim {
+      font-size: 8rem;
+      opacity: 0.12;
+      animation: floatEmoji 6s ease-in-out infinite;
+    }
+    @keyframes floatEmoji {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-20px) scale(1.05); }
+    }
+
+    .pp-hero-content {
+      position: relative;
+      z-index: 1;
+    }
+    .pp-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(18, 22, 28, 0.8);
+      backdrop-filter: blur(12px);
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      margin-bottom: 28px;
+      transition: color 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .pp-back:hover {
+      color: var(--text-primary);
+      border-color: var(--text-tertiary);
+      transform: translateX(-4px);
+    }
+    .pp-back svg { transition: transform 0.2s; }
+    .pp-back:hover svg { transform: translateX(-3px); }
+
+    .pp-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .pp-title {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 400;
+      line-height: 1.1;
+      max-width: 700px;
+      margin-bottom: 16px;
+    }
+    .pp-meta {
+      color: var(--text-tertiary);
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+    }
+    .pp-tags-hero { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .pp-body {
+      padding: 48px 80px 80px;
+      max-width: 1000px;
+    }
+
+    .pp-section {
+      margin-bottom: 48px;
+    }
+    .pp-section h2 {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      margin-bottom: 18px;
+      color: var(--text-primary);
+    }
+    .pp-summary {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      font-weight: 300;
+      max-width: 720px;
+    }
+
+    .pp-highlights {
+      display: grid;
+      gap: 12px;
+      list-style: none;
+      padding: 0;
+    }
+    .pp-highlights li {
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 14px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      color: var(--text-secondary);
+      font-weight: 300;
+      line-height: 1.6;
+      transition: border-color 0.3s, transform 0.3s var(--ease-out-expo);
+    }
+    .pp-highlights li:hover {
+      border-color: var(--border);
+      transform: translateX(4px);
+    }
+    .pp-highlights .bullet-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--accent-glow);
+      display: grid;
+      place-items: center;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.85rem;
       flex-shrink: 0;
     }
-    .modal-close:hover { background: var(--surface-hover); }
 
-    .modal-meta {
-      color: var(--text-tertiary);
-      font-size: 0.9rem;
-      margin-top: 4px;
-    }
-
-    .modal-content {
+    .pp-media-grid {
       display: grid;
-      grid-template-columns: 1.3fr 1fr;
-      gap: 28px;
+      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+      gap: 18px;
     }
-
-    .modal-gallery {
+    .pp-media-item {
       border-radius: 16px;
       overflow: hidden;
-      background: var(--bg);
+      background: var(--surface);
       border: 1px solid var(--border-subtle);
     }
-    .modal-gallery iframe,
-    .modal-gallery img {
+    .pp-media-item iframe,
+    .pp-media-item img {
       width: 100%;
-      height: 380px;
+      height: 360px;
       object-fit: cover;
       display: block;
       border: 0;
     }
 
-    .modal-info { display: grid; gap: 14px; align-content: start; }
-    .modal-summary {
-      color: var(--text-secondary);
-      font-weight: 300;
-      line-height: 1.7;
+    .pp-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
     }
-    .modal-bullets {
-      list-style: none;
-      padding: 0;
+
+    /* Staggered content reveals inside project page */
+    .pp-reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      animation: ppRevealIn 0.7s var(--ease-out-expo) forwards;
     }
-    .modal-bullets li {
-      padding-left: 20px;
-      position: relative;
-      color: var(--text-secondary);
-      font-weight: 300;
-      line-height: 1.7;
-      margin-bottom: 4px;
+    .pp-reveal-d1 { animation-delay: 0.35s; }
+    .pp-reveal-d2 { animation-delay: 0.45s; }
+    .pp-reveal-d3 { animation-delay: 0.55s; }
+    .pp-reveal-d4 { animation-delay: 0.65s; }
+    .pp-reveal-d5 { animation-delay: 0.75s; }
+    @keyframes ppRevealIn {
+      to { opacity: 1; transform: translateY(0); }
     }
-    .modal-bullets li::before {
-      content: '›';
-      position: absolute;
-      left: 0;
-      color: var(--accent-dim);
-      font-weight: 600;
+
+    @media (max-width: 900px) {
+      .pp-hero { padding: 48px 32px 36px; min-height: 40vh; }
+      .pp-body { padding: 36px 32px 60px; }
+      .pp-media-grid { grid-template-columns: 1fr; }
     }
-    .modal-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-    .modal-links { display: flex; gap: 10px; flex-wrap: wrap; }
+    @media (max-width: 640px) {
+      .pp-hero { padding: 36px 20px 28px; }
+      .pp-body { padding: 28px 20px 48px; }
+    }
 
     /* ===== RESPONSIVE ===== */
     @media (max-width: 900px) {
@@ -1086,7 +1245,10 @@
   <!-- Cursor glow -->
   <div class="cursor-glow" id="cursorGlow"></div>
 
-  <!-- Navigation -->
+  <!-- Page transition cover -->
+  <div class="page-transition-cover" id="transitionCover"></div>
+
+  <!-- Navigation (stays above everything) -->
   <nav class="nav-bar" id="navbar">
     <div class="nav-logo">Aras <em>Ozdemir</em></div>
     <ul class="nav-links">
@@ -1111,6 +1273,9 @@
     <a href="#skills">Skills</a>
     <a href="#contact">Contact</a>
   </div>
+
+  <!-- ===== MAIN CONTENT (fades out on project open) ===== -->
+  <div class="page-main" id="pageMain">
 
   <!-- ===== HERO ===== -->
   <section class="hero" id="hero">
@@ -1144,8 +1309,7 @@
     <h2 class="section-title reveal reveal-delay-1">A bit about <em>me</em></h2>
     <div class="about-grid">
       <div class="about-photo-wrap reveal-left">
-        <!-- REPLACE with your actual photo -->
-        <img class="about-photo" src="assets/profile.png" alt="Portrait of Aras Ozdemir" />
+        <img class="about-photo" src="assets/Profile.png" alt="Portrait of Aras Ozdemir" />
       </div>
       <div class="reveal-right">
         <p class="about-text">
@@ -1183,7 +1347,7 @@
     <h2 class="section-title reveal reveal-delay-1">Where I <em>studied</em></h2>
     <div class="edu-cards">
       <div class="edu-card reveal reveal-delay-1">
-        <div class="edu-icon">🎓</div>
+        <div class="edu-icon"><img src="assets/cornell_seal_simple_web_white.png" alt="Cornell University" /></div>
         <div>
           <div class="edu-school">Cornell University</div>
           <div class="edu-college">David A. Duffield College of Engineering</div>
@@ -1196,7 +1360,7 @@
         </div>
       </div>
       <div class="edu-card reveal reveal-delay-2">
-        <div class="edu-icon">🏛️</div>
+        <div class="edu-icon"><img src="assets/pennsylvania-state-university-seeklogo.png" alt="Penn State" /></div>
         <div>
           <div class="edu-school">Pennsylvania State University</div>
           <div class="edu-college">College of Engineering</div>
@@ -1272,27 +1436,10 @@
     <p>© <span id="yearFooter"></span> Aras Ozdemir · Built with care in Ithaca, NY</p>
   </footer>
 
-  <!-- ===== MODAL ===== -->
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal-panel">
-      <div class="modal-header">
-        <div>
-          <h3 id="modalTitle"></h3>
-          <div class="modal-meta" id="modalMeta"></div>
-        </div>
-        <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
-      </div>
-      <div class="modal-content">
-        <div class="modal-gallery" id="modalGallery"></div>
-        <div class="modal-info">
-          <p class="modal-summary" id="modalSummary"></p>
-          <ul class="modal-bullets" id="modalBullets"></ul>
-          <div class="modal-tags" id="modalTags"></div>
-          <div class="modal-links" id="modalLinks"></div>
-        </div>
-      </div>
-    </div>
-  </div>
+  </div><!-- /.page-main -->
+
+  <!-- ===== PROJECT DETAIL PAGE (rendered by JS) ===== -->
+  <div class="project-page" id="projectPage"></div>
 
   <!-- Person schema for SEO -->
   <script type="application/ld+json">
@@ -1379,6 +1526,7 @@
         where: "Ithaca, NY",
         when: "Aug 2025 – Present",
         summary: "Leading an ASML-sponsored capstone project to integrate an industrial robotic handling arm for safe laboratory deployment, including fail-safe systems and FMEA-based risk management.",
+        description: "This ASML-sponsored capstone at Cornell involves the full integration of a donated industrial robotic handling arm into a university lab environment. The challenge goes beyond simple installation — it requires building the complete electrical and mechanical infrastructure from scratch, designing a control network that prioritizes safety above all else, and creating operational protocols that allow researchers to use the system confidently. The project combines dynamic force simulation in MATLAB with FMEA-driven risk assessment to ensure every failure mode is accounted for before the arm ever moves under power.",
         bullets: [
           "Design electrical & mechanical support systems for safe robotic operation.",
           "Perform dynamic force simulations in MATLAB to evaluate loading and safety margins.",
@@ -1389,6 +1537,7 @@
         tags: ["Robotics", "FMEA", "MATLAB", "Safety"],
         gradient: "linear-gradient(135deg, #1a1f35, #0d1a2d)",
         emoji: "🤖",
+        heroColor: "#1a2540",
         media: [{ type: "image", src: "assets/placeholder.jpg", alt: "Robotic arm" }],
       },
       {
@@ -1397,6 +1546,7 @@
         where: "State College, PA",
         when: "Jan 2024 – May 2024",
         summary: "Redesigned a medical connector to solve unclamping failures, achieving a 48% grip strength improvement through FEA-driven iterative prototyping.",
+        description: "Sponsored by B. Braun Medical, this capstone tackled a critical failure mode: secondary connectors unclamping during medical procedures. Through systematic mechanical testing and iterative CAD prototyping backed by COMSOL-based FEA simulations, the team optimized stress distribution across the connector geometry. The final design achieved a 48% improvement in grip strength while maintaining the customer-specified flow rate — a delicate balance between mechanical performance and fluid dynamics. All documentation was prepared to meet FDA design control standards.",
         bullets: [
           "Analyzed failure modes of secondary connector unclamping using mechanical testing.",
           "Iterated CAD prototypes with COMSOL-based FEA to optimize stress distribution.",
@@ -1406,6 +1556,7 @@
         tags: ["Design Controls", "Prototyping", "FEA", "FDA"],
         gradient: "linear-gradient(135deg, #1f1a2e, #1a1025)",
         emoji: "🏥",
+        heroColor: "#1e1530",
         media: [
           { type: "youtube", src: "https://www.youtube.com/embed/e7jPhOMTgnY?rel=0&modestbranding=1&playsinline=1&enablejsapi=1" },
         ],
@@ -1417,13 +1568,15 @@
         where: "State College, PA",
         when: "Aug 2023 – Dec 2023",
         summary: "Interactive exhibit designed to spark curiosity while meeting safety, reliability, and durability standards.",
+        description: "This project brought engineering into the public eye — literally. The team designed and built an interactive exhibit for the Discovery Space Museum in State College, creating mechanical systems that needed to be simultaneously engaging for children, educational for families, and robust enough to withstand thousands of interactions. Every mechanism was designed with safety as the top priority, while ensuring the hands-on elements remained intuitive and genuinely fun to explore.",
         bullets: [
           "Designed interactive mechanisms for hands-on learning.",
-          "Ensured safety & durability of all mechanical elements."
+          "Ensured safety & durability of all mechanical elements.",
         ],
         tags: ["Exhibit", "Design", "Safety"],
         gradient: "linear-gradient(135deg, #1a2a1f, #0d1a15)",
         emoji: "🔬",
+        heroColor: "#142218",
         media: [
           { type: "image", src: "assets/discovery-01.jpg", alt: "Exhibit overview" },
         ],
@@ -1434,6 +1587,7 @@
         where: "State College, PA",
         when: "Jan 2023 – May 2023",
         summary: "COMSOL simulations of complex stent geometries to study mechanics and fluid dynamics.",
+        description: "This project explored the intersection of computational fluid dynamics and finite element analysis through COMSOL Multiphysics. The team modeled complex stent geometries — including non-standard elliptical cross-sections — to predict how blood flow patterns and mechanical stresses interact with implanted stents. The work involved careful mesh generation, boundary condition definition, and validation of results against known behavior, providing insight into how geometry choices affect both hemodynamic performance and structural integrity.",
         bullets: [
           "Modeled stent geometries and boundary conditions in COMSOL Multiphysics.",
           "Predicted fluid flow and stress impact on stents using coupled CFD/FEA analysis."
@@ -1441,6 +1595,7 @@
         tags: ["COMSOL", "CFD", "FEA"],
         gradient: "linear-gradient(135deg, #2a1f1a, #1a150d)",
         emoji: "📊",
+        heroColor: "#221a10",
         media: [
           { type: "pdf", src: "assets/BME_401_FinalProject_Group4_Doc.pdf", label: "Read full report (PDF)" }
         ],
@@ -1551,7 +1706,7 @@
             <div class="tags">${p.tags.map(t => `<span class="chip">${t}</span>`).join('')}</div>
           </div>
         `;
-        card.addEventListener('click', () => openProjectModal(p));
+        card.addEventListener('click', () => openProject(p, card));
         grid.appendChild(card);
       });
     }
@@ -1578,58 +1733,128 @@
       });
     }
 
-    // ===== MODAL =====
-    const overlay = document.getElementById('modalOverlay');
+    // ===== PROJECT DETAIL PAGE =====
+    const projectPage = document.getElementById('projectPage');
+    const pageMain = document.getElementById('pageMain');
+    const transitionCover = document.getElementById('transitionCover');
+    let savedScrollY = 0;
 
-    function openProjectModal(p) {
-      document.getElementById('modalTitle').textContent = p.title;
-      document.getElementById('modalMeta').textContent = `${p.when} · ${p.where}`;
-      document.getElementById('modalSummary').textContent = p.summary;
+    function openProject(p, cardEl) {
+      savedScrollY = window.scrollY;
 
-      const bullets = document.getElementById('modalBullets');
-      bullets.innerHTML = p.bullets.map(b => `<li>${b}</li>`).join('');
+      // 1. Add expanding class to card for z-index
+      if (cardEl) cardEl.classList.add('expanding');
 
-      const tags = document.getElementById('modalTags');
-      tags.innerHTML = p.tags.map(t => `<span class="chip">${t}</span>`).join('');
+      // 2. Trigger transition cover with project color
+      transitionCover.style.background = `radial-gradient(ellipse at center, ${p.heroColor || '#111'}, var(--bg))`;
+      transitionCover.classList.add('active');
 
-      const links = document.getElementById('modalLinks');
-      links.innerHTML = '';
-      (p.links || []).forEach(l => {
-        links.innerHTML += `<a class="btn-outline" href="${l.href}" target="_blank" rel="noopener noreferrer">${l.label}</a>`;
-      });
+      // 3. Fade out main content
+      pageMain.classList.add('exiting');
 
-      const gallery = document.getElementById('modalGallery');
-      gallery.innerHTML = '';
-      if (p.media && p.media.length) {
-        const m = p.media[0];
-        if (m.type === 'youtube') {
-          gallery.innerHTML = `<iframe src="${m.src}" title="${p.title} video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-        } else if (m.type === 'image') {
-          gallery.innerHTML = `<img src="${m.src}" alt="${m.alt || p.title}" />`;
-        } else if (m.type === 'pdf') {
-          gallery.innerHTML = `<iframe src="${m.src}" title="${p.title} PDF"></iframe>`;
-          links.innerHTML += `<a class="btn-outline" href="${m.src}" download>${m.label || 'Download PDF'}</a>`;
-        }
-      } else {
-        gallery.innerHTML = `<div style="display:grid;place-items:center;height:380px;color:var(--text-tertiary)">No media yet</div>`;
+      // 4. Build project page content
+      const mediaHTML = buildMediaHTML(p);
+      const bulletsHTML = p.bullets.map((b, i) =>
+        `<li class="pp-reveal pp-reveal-d${Math.min(i + 2, 5)}">
+          <span class="bullet-icon">${String(i + 1).padStart(2, '0')}</span>
+          <span>${b}</span>
+        </li>`
+      ).join('');
+
+      const linksHTML = (p.links || []).map(l =>
+        `<a class="btn-outline" href="${l.href}" target="_blank" rel="noopener noreferrer">${l.label}</a>`
+      ).join('');
+
+      // Add PDF download to links if media has PDF
+      let extraLinksHTML = '';
+      if (p.media && p.media[0] && p.media[0].type === 'pdf') {
+        extraLinksHTML = `<a class="btn-primary" href="${p.media[0].src}" download>${p.media[0].label || 'Download PDF'}</a>`;
       }
 
-      overlay.classList.add('open');
-      document.body.style.overflow = 'hidden';
+      projectPage.innerHTML = `
+        <div class="pp-hero" style="background:${p.gradient}">
+          <div class="pp-hero-visual">
+            <div class="placeholder-anim">${p.emoji}</div>
+          </div>
+          <div class="pp-hero-bg"></div>
+          <div class="pp-hero-content">
+            <button class="pp-back pp-reveal pp-reveal-d1" onclick="closeProject()">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+              Back to Projects
+            </button>
+            <div class="pp-eyebrow pp-reveal pp-reveal-d1">${p.when} · ${p.where}</div>
+            <h1 class="pp-title pp-reveal pp-reveal-d2">${p.title}</h1>
+            <div class="pp-tags-hero pp-reveal pp-reveal-d3">
+              ${p.tags.map(t => `<span class="chip">${t}</span>`).join('')}
+            </div>
+          </div>
+        </div>
+        <div class="pp-body">
+          <div class="pp-section pp-reveal pp-reveal-d3">
+            <h2>Overview</h2>
+            <p class="pp-summary">${p.description || p.summary}</p>
+          </div>
+          <div class="pp-section pp-reveal pp-reveal-d4">
+            <h2>Key Contributions</h2>
+            <ul class="pp-highlights">${bulletsHTML}</ul>
+          </div>
+          ${mediaHTML ? `<div class="pp-section pp-reveal pp-reveal-d5"><h2>Media</h2><div class="pp-media-grid">${mediaHTML}</div></div>` : ''}
+          ${(linksHTML || extraLinksHTML) ? `<div class="pp-section pp-reveal pp-reveal-d5"><h2>Links</h2><div class="pp-links">${extraLinksHTML}${linksHTML}</div></div>` : ''}
+        </div>
+      `;
+
+      // 5. Show project page after short delay
+      setTimeout(() => {
+        projectPage.classList.add('open');
+        projectPage.scrollTop = 0;
+        document.body.style.overflow = 'hidden';
+        // Hide nav
+        document.getElementById('navbar').style.display = 'none';
+      }, 200);
+
+      // 6. Clean up card state
+      setTimeout(() => {
+        if (cardEl) cardEl.classList.remove('expanding');
+        transitionCover.classList.remove('active');
+      }, 700);
     }
 
-    function closeModal() {
-      overlay.classList.remove('open');
-      document.body.style.overflow = '';
-      // Pause youtube
-      document.querySelectorAll('#modalGallery iframe').forEach(f => {
-        f.contentWindow?.postMessage(JSON.stringify({event:'command',func:'pauseVideo',args:''}), '*');
-      });
+    function closeProject() {
+      // 1. Animate out project page
+      projectPage.classList.add('closing');
+
+      // 2. Trigger cover
+      transitionCover.classList.add('active');
+
+      // 3. After animation, reset
+      setTimeout(() => {
+        projectPage.classList.remove('open', 'closing');
+        projectPage.innerHTML = '';
+        pageMain.classList.remove('exiting');
+        document.body.style.overflow = '';
+        document.getElementById('navbar').style.display = '';
+        // Restore scroll
+        window.scrollTo(0, savedScrollY);
+        transitionCover.classList.remove('active');
+      }, 500);
     }
 
-    document.getElementById('modalClose').addEventListener('click', closeModal);
-    overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+    function buildMediaHTML(p) {
+      if (!p.media || !p.media.length) return '';
+      return p.media.map(m => {
+        if (m.type === 'youtube') {
+          return `<div class="pp-media-item"><iframe src="${m.src}" title="Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+        } else if (m.type === 'image') {
+          return `<div class="pp-media-item"><img src="${m.src}" alt="${m.alt || ''}" /></div>`;
+        } else if (m.type === 'pdf') {
+          return `<div class="pp-media-item"><iframe src="${m.src}" title="PDF report" style="height:500px"></iframe></div>`;
+        }
+        return '';
+      }).join('');
+    }
+
+    // Escape key closes project page
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && projectPage.classList.contains('open')) closeProject(); });
 
     // ===== SCROLL REVEAL (Intersection Observer) =====
     const revealObserver = new IntersectionObserver((entries) => {
