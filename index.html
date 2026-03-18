@@ -1538,6 +1538,7 @@
         gradient: "linear-gradient(135deg, #1a1f35, #0d1a2d)",
         emoji: "🤖",
         heroColor: "#1a2540",
+        heroVideo: "assets/Robotic_Arm_Animation_Generated.mp4",
         media: [{ type: "image", src: "assets/placeholder.jpg", alt: "Robotic arm" }],
       },
       {
@@ -1557,6 +1558,7 @@
         gradient: "linear-gradient(135deg, #1f1a2e, #1a1025)",
         emoji: "🏥",
         heroColor: "#1e1530",
+        heroVideo: "assets/bbraun.mp4",
         media: [
           { type: "youtube", src: "https://www.youtube.com/embed/e7jPhOMTgnY?rel=0&modestbranding=1&playsinline=1&enablejsapi=1" },
         ],
@@ -1577,6 +1579,7 @@
         gradient: "linear-gradient(135deg, #1a2a1f, #0d1a15)",
         emoji: "🔬",
         heroColor: "#142218",
+        heroVideo: "assets/Playful_Mechanical_Diorama_Animation.mp4",
         media: [
           { type: "image", src: "assets/discovery-01.jpg", alt: "Exhibit overview" },
         ],
@@ -1774,7 +1777,10 @@
       projectPage.innerHTML = `
         <div class="pp-hero" style="background:${p.gradient}">
           <div class="pp-hero-visual">
-            <div class="placeholder-anim">${p.emoji}</div>
+            ${p.heroVideo
+              ? `<video autoplay loop muted playsinline src="${p.heroVideo}"></video>`
+              : `<div class="placeholder-anim">${p.emoji}</div>`
+            }
           </div>
           <div class="pp-hero-bg"></div>
           <div class="pp-hero-content">
@@ -1820,13 +1826,19 @@
     }
 
     function closeProject() {
-      // 1. Animate out project page
+      // 1. Pause all media
+      projectPage.querySelectorAll('video').forEach(v => { v.pause(); v.currentTime = 0; });
+      projectPage.querySelectorAll('iframe').forEach(f => {
+        f.contentWindow?.postMessage(JSON.stringify({event:'command',func:'pauseVideo',args:''}), '*');
+      });
+
+      // 2. Animate out project page
       projectPage.classList.add('closing');
 
-      // 2. Trigger cover
+      // 3. Trigger cover
       transitionCover.classList.add('active');
 
-      // 3. After animation, reset
+      // 4. After animation, reset
       setTimeout(() => {
         projectPage.classList.remove('open', 'closing');
         projectPage.innerHTML = '';
