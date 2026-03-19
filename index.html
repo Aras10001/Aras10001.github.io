@@ -174,23 +174,7 @@
     .edu-badge.date{background:var(--bg);color:var(--text-tertiary);border:1px solid var(--border-subtle);font-family:var(--mono);font-weight:400;font-size:.78rem}
     .edu-badge.cert{background:var(--warm-glow);color:var(--warm);border:1px solid rgba(232,193,112,.18)}
 
-    /* ===== TIMELINE ===== */
-    .timeline{position:relative;padding-left:44px}
-    .timeline::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:1px;background:linear-gradient(to bottom,var(--accent),rgba(91,156,245,.2),transparent)}
-    .timeline-item{position:relative;padding-bottom:52px}
-    .timeline-item:last-child{padding-bottom:0}
-    .timeline-dot{position:absolute;left:-44px;top:6px;width:15px;height:15px;border-radius:50%;background:var(--bg);border:2px solid var(--accent);z-index:1;transition:transform .4s var(--spring),box-shadow .4s}
-    .timeline-dot::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--accent)}
-    .timeline-item:hover .timeline-dot{transform:scale(1.5);box-shadow:0 0 0 6px rgba(91,156,245,.12),0 0 20px rgba(91,156,245,.2)}
-    .timeline-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:10px}
-    .timeline-role{font-weight:700;font-size:1.12rem}
-    .timeline-company{color:var(--accent);font-weight:600}
-    .timeline-when{font-family:var(--mono);font-size:.78rem;color:var(--text-tertiary);background:var(--surface);padding:5px 14px;border-radius:999px;border:1px solid var(--border-subtle);white-space:nowrap}
-    .timeline-location{color:var(--text-tertiary);font-size:.88rem;margin-bottom:16px}
-    .timeline-bullets{list-style:none;padding:0}
-    .timeline-bullets li{position:relative;padding-left:22px;color:var(--text-secondary);font-weight:300;line-height:1.75;margin-bottom:6px}
-    .timeline-bullets li::before{content:'›';position:absolute;left:0;color:var(--accent-dim);font-weight:700;font-size:1.1em}
-    .timeline-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+    /* (timeline CSS removed — experience now uses card grid) */
     .chip{display:inline-flex;align-items:center;padding:5px 13px;border-radius:999px;background:rgba(91,156,245,.06);color:var(--accent);border:1px solid rgba(91,156,245,.12);font-size:.78rem;font-weight:500;letter-spacing:.02em;transition:background .3s,transform .3s var(--spring)}
     .chip:hover{background:rgba(91,156,245,.14);transform:translateY(-1px)}
 
@@ -254,22 +238,35 @@
 
     /* ===== PAGE TRANSITION ===== */
     .page-main{transition:opacity .5s var(--ease-out-expo),transform .5s var(--ease-out-expo)}
-    .page-main.exiting{opacity:0;transform:scale(.97);pointer-events:none}
-    .page-transition-cover{position:fixed;inset:0;z-index:150;pointer-events:none;opacity:0}
-    .page-transition-cover.active{animation:coverFlash .7s var(--ease-out-expo) forwards}
-    @keyframes coverFlash{0%{opacity:0}30%{opacity:1}100%{opacity:0}}
+    .page-main.exiting{opacity:0;transform:scale(.98);pointer-events:none}
 
-    /* ===== PROJECT DETAIL ===== */
-    .project-page{position:fixed;inset:0;z-index:100;background:var(--bg);overflow-y:auto;overflow-x:hidden;display:none;opacity:0}
-    .project-page.open{display:block;animation:ppIn .6s .25s var(--ease-out-expo) forwards}
-    .project-page.closing{animation:ppOut .45s var(--ease-out-expo) forwards}
-    @keyframes ppIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
-    @keyframes ppOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(20px)}}
+    /* ===== DETAIL PAGE (shared: projects + experience) ===== */
+    .detail-page{position:fixed;inset:0;z-index:100;background:var(--bg);overflow-y:auto;overflow-x:hidden;display:none;will-change:clip-path,opacity,transform}
+
+    /* ===== HERO MEDIA CROSSFADE ===== */
+    /* Thumbnail that shows immediately then fades out as video/image fades in */
+    .pp-thumb-crossfade{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;opacity:.35;animation:thumbFadeOut 1.8s .35s var(--ease-out-expo) forwards;pointer-events:none}
+    @keyframes thumbFadeOut{to{opacity:0}}
+    .pp-video-fadein{opacity:0;animation:mediaFadeIn 1.4s .25s var(--ease-out-expo) forwards}
+    .pp-img-fadein{opacity:0;animation:mediaFadeIn 1s .15s var(--ease-out-expo) forwards}
+    @keyframes mediaFadeIn{to{opacity:.32}}
+
+    /* ===== EXPERIENCE CARD EXTRAS ===== */
+    .exp-thumb-overlay{position:absolute;bottom:0;left:0;right:0;padding:14px 20px;background:linear-gradient(to top,rgba(0,0,0,.7),transparent);z-index:1;pointer-events:none}
+    .exp-thumb-role{font-weight:700;font-size:.9rem;color:#fff;line-height:1.3}
+    .exp-thumb-co{font-size:.74rem;color:rgba(255,255,255,.55);margin-top:2px;font-family:var(--mono)}
+    .project-body .co-sub{color:var(--accent);font-size:.83rem;font-weight:600;margin-bottom:6px;margin-top:-3px}
+    .project-body .date-badge{display:inline-flex;align-items:center;padding:4px 11px;border-radius:999px;background:var(--bg);border:1px solid var(--border-subtle);font-family:var(--mono);font-size:.72rem;color:var(--text-tertiary);margin-bottom:10px}
+
+    /* ===== VIDEO PLACEHOLDER ===== */
+    .pp-placeholder-video .pp-placeholder-inner svg{opacity:.35}
+    .pp-placeholder-video{border-color:rgba(91,156,245,.15)}
     .pp-hero{position:relative;min-height:50vh;display:flex;flex-direction:column;justify-content:flex-end;padding:60px 80px 52px;overflow:hidden}
     .pp-hero-bg{position:absolute;inset:0;z-index:0}
     .pp-hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(6,8,11,.3) 0%,var(--bg) 100%)}
     .pp-hero-visual{position:absolute;inset:0;display:grid;place-items:center;z-index:0;overflow:hidden}
-    .pp-hero-visual img,.pp-hero-visual video{width:100%;height:100%;object-fit:cover;opacity:.3}
+    /* img/video opacity is controlled by crossfade animations (.pp-thumb-crossfade, .pp-video-fadein, .pp-img-fadein) */
+    .pp-hero-visual img,.pp-hero-visual video{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
     .pp-hero-visual .placeholder-anim{font-size:8rem;opacity:.1;animation:floatEmoji 6s ease-in-out infinite}
     @keyframes floatEmoji{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-20px) scale(1.05)}}
     .pp-hero-content{position:relative;z-index:1}
@@ -351,8 +348,8 @@
   <!-- Scroll progress -->
   <div class="scroll-progress" id="scrollProgress"></div>
 
-  <!-- Page transition -->
-  <div class="page-transition-cover" id="transitionCover"></div>
+  <!-- Detail page overlay (shared by projects + experience) -->
+  <div class="detail-page" id="detailPage"></div>
 
   <!-- Navigation -->
   <nav class="nav-bar" id="navbar">
@@ -506,7 +503,7 @@
   <section class="section" id="experience">
     <div class="section-label reveal">03 — Experience</div>
     <h2 class="section-title reveal reveal-d1">Where I've <em>worked</em></h2>
-    <div class="timeline" id="timelineContainer"></div>
+    <div class="projects-grid" id="expGrid"></div>
   </section>
 
   <!-- PROJECTS -->
@@ -570,8 +567,7 @@
 
   </div><!-- /.page-main -->
 
-  <!-- PROJECT DETAIL PAGE -->
-  <div class="project-page" id="projectPage"></div>
+  <!-- (detail overlay is above pageMain, declared earlier) -->
 
   <!-- SEO / Schema -->
   <script type="application/ld+json">
@@ -582,7 +578,12 @@
   // ===== DATA =====
   const experience = [
     {
-      role:"Engineering Lead",company:"ASML Capstone Project — Cornell",when:"Aug 2025 – Present",where:"Ithaca, NY",
+      id:"asml-exp",
+      role:"Engineering Lead",company:"ASML Capstone Project — Cornell",
+      when:"Aug 2025 – Present",where:"Ithaca, NY",
+      title:"ASML Capstone — Robotic Arm Integration",
+      summary:"Leading the full integration of an ASML-donated industrial robotic handling arm into a Cornell lab, including fail-safe control systems, dynamic simulations, and FMEA-driven risk management.",
+      description:"This ASML-sponsored capstone at Cornell involves the full integration of a donated industrial robotic handling arm into a university lab environment. The challenge goes beyond simple installation — it requires building the complete electrical and mechanical infrastructure from scratch, designing a control network that prioritizes safety above all else, and creating operational protocols that allow researchers to use the system confidently. The project combines dynamic force simulation in MATLAB with FMEA-driven risk assessment to ensure every failure mode is accounted for before the arm ever moves under power.",
       bullets:[
         "Lead an ASML-sponsored project managing integration of an industrial robotic handling arm for safe laboratory deployment.",
         "Design and implement electrical and mechanical support systems to enable safe operation.",
@@ -590,10 +591,22 @@
         "Conduct FMEA-based risk assessments to identify operational hazards and define mitigation strategies.",
         "Architect a sensor-integrated fail-safe shutdown system to immediately disable the robot under unsafe trajectory conditions."
       ],
-      tags:["FMEA","MATLAB","Risk Management","Systems Engineering","Robotics"]
+      tags:["FMEA","MATLAB","Risk Management","Systems Engineering","Robotics"],
+      gradient:"linear-gradient(135deg,#0f1729,#1a2540)",
+      heroColor:"#0f1729",emoji:"⚙️",thumb:null,heroVideo:null,
+      media:[
+        {type:"placeholder",label:"Robotic Arm in Lab",hint:"Add: assets/asml-lab.jpg"},
+        {type:"video-placeholder",label:"Demo / Live Run Video",hint:"Add: assets/asml-demo.mp4"},
+        {type:"placeholder",label:"MATLAB Force Simulation",hint:"Add: assets/asml-sim.jpg"}
+      ]
     },
     {
-      role:"Quality Engineer",company:"Fresenius Kabi",when:"Nov 2024 – Aug 2025",where:"Frankfurt, Germany",
+      id:"fresenius-exp",
+      role:"Quality Engineer",company:"Fresenius Kabi",
+      when:"Nov 2024 – Aug 2025",where:"Frankfurt, Germany",
+      title:"Quality Engineer — Fresenius Kabi",
+      summary:"Supported 510(k) submissions, resolved device complaints via CAPA, revised 40+ technical drawings for FDA/ASME compliance, and built an automated test rig eliminating 28 manual labor hours per validation run.",
+      description:"At Fresenius Kabi in Frankfurt, I worked within a full ISO 13485 / ISO 9001 quality management system on Class II medical devices. My work spanned the complete quality engineering spectrum — from regulatory documentation for 510(k) submissions to hands-on validation engineering. I designed and built an automated magnetic hatch durability tester from scratch, transforming a tedious 28-hour manual process into a single automated overnight run. I also overhauled validation workflows (IQ/OQ/PQ) to eliminate redundant steps and enable material reuse, cutting total time by ~20%.",
       bullets:[
         "Supported preparation of Class II 510(k) submission documentation, contributing to successful regulatory filing.",
         "Investigated and resolved reported device complaints, performing root cause analysis to support corrective actions (CAPA).",
@@ -601,27 +614,58 @@
         "Engineered an automated magnetic hatch durability tester (10,000 cycles), reducing ~28 manual labor hours per validation run.",
         "Reengineered validation test workflows (IQ/OQ/PQ) to eliminate steps and enable material reuse, improving efficiency by ~20%."
       ],
-      tags:["ISO 13485","ISO 9001","510(k)","CAPA","GD&T","IQ/OQ/PQ","FDA"]
+      tags:["ISO 13485","ISO 9001","510(k)","CAPA","GD&T","IQ/OQ/PQ","FDA"],
+      gradient:"linear-gradient(135deg,#071420,#0d2035)",
+      heroColor:"#071420",emoji:"🔬",thumb:null,heroVideo:null,
+      media:[
+        {type:"placeholder",label:"Automated Durability Test Rig",hint:"Add: assets/fk-tester.jpg"},
+        {type:"video-placeholder",label:"Test Rig in Action",hint:"Add: assets/fk-tester-demo.mp4"},
+        {type:"placeholder",label:"Technical Drawing Samples",hint:"Add: assets/fk-drawings.jpg"}
+      ]
     },
     {
-      role:"Design Engineer",company:"B. Braun Medical Inc.",when:"Jan 2024 – May 2024",where:"State College, PA",
+      id:"bbraun-exp",
+      role:"Design Engineer",company:"B. Braun Medical Inc.",
+      when:"Jan 2024 – May 2024",where:"State College, PA",
+      title:"Design Engineer — B. Braun Medical",
+      summary:"Redesigned a medical connector to eliminate unclamping failures, achieving a 48% grip strength improvement through iterative CAD prototyping backed by COMSOL FEA simulations.",
+      description:"Sponsored by B. Braun Medical, this role tackled a critical failure mode: secondary connectors unclamping during medical procedures. Through systematic mechanical testing and iterative CAD prototyping backed by COMSOL-based FEA simulations, I optimized stress distribution across the connector geometry. The final design achieved a 48% improvement in grip strength while maintaining the customer-specified flow rate — a delicate balance between mechanical performance and fluid dynamics. All documentation was prepared to meet FDA design control standards.",
       bullets:[
         "Analyzed failure modes of a secondary connector unclamping during procedures using mechanical testing.",
         "Designed and iterated CAD prototypes supported by COMSOL-based FEA simulations to optimize stress distribution.",
         "Improved connector grip strength by 48% while maintaining customer-specified flow rate requirements.",
         "Conducted validation testing and ensured documentation complied with FDA design control and regulatory standards."
       ],
-      tags:["Design Controls","FEA","COMSOL","Prototyping","FDA"]
+      tags:["Design Controls","FEA","COMSOL","Prototyping","FDA"],
+      gradient:"linear-gradient(135deg,#1f1a2e,#1a1025)",
+      heroColor:"#1e1530",emoji:"🏥",thumb:null,heroVideo:null,
+      media:[
+        {type:"placeholder",label:"Connector CAD Model",hint:"Add: assets/bbraun-exp-cad.jpg"},
+        {type:"placeholder",label:"FEA Stress Analysis",hint:"Add: assets/bbraun-exp-fea.jpg"},
+        {type:"video-placeholder",label:"Mechanical Testing Video",hint:"Add: assets/bbraun-exp-test.mp4"}
+      ]
     },
     {
-      role:"Research Assistant",company:"The Pennsylvania State University",when:"Jan 2023 – Jan 2024",where:"State College, PA",
+      id:"psu-exp",
+      role:"Research Assistant",company:"Pennsylvania State University",
+      when:"Jan 2023 – Jan 2024",where:"State College, PA",
+      title:"Research Assistant — Penn State",
+      summary:"Studied bacteriophage antibiotic properties using advanced microscopy; built a custom MATLAB GUI automating data analysis and implemented signal filtering for high-quality research visualizations.",
+      description:"As a research assistant at Penn State, I studied the antibiotic properties of bacteriophages — viruses that infect bacteria — as part of ongoing research into alternatives to conventional antibiotics. My role combined wet-lab work with computational data analysis. I built a custom MATLAB application with a graphical interface to automate the analysis of microscopy images, dramatically reducing manual processing time and improving reproducibility. I also implemented advanced signal filtering methods to clean noisy imaging data and generate publication-quality visualizations.",
       bullets:[
         "Conducted extensive research on antibiotic properties of bacteriophages, studying phage-bacteria interactions.",
         "Utilized advanced microscopy techniques for high-resolution photography of bacteriophage-bacteria interactions.",
-        "Developed a MATLAB application with a GUI, streamlining data analysis through automation.",
+        "Developed a MATLAB application with a graphical user interface, streamlining data analysis through automation.",
         "Implemented advanced filtering methods to minimize data noise, generating clear and informative visualizations."
       ],
-      tags:["MATLAB","Microscopy","Data Analysis","Signal Processing","R"]
+      tags:["MATLAB","Microscopy","Data Analysis","Signal Processing","R"],
+      gradient:"linear-gradient(135deg,#0f1f12,#142018)",
+      heroColor:"#0f1f12",emoji:"🧬",thumb:null,heroVideo:null,
+      media:[
+        {type:"placeholder",label:"Microscopy Images",hint:"Add: assets/psu-microscopy.jpg"},
+        {type:"placeholder",label:"MATLAB GUI Screenshot",hint:"Add: assets/psu-matlab.jpg"},
+        {type:"video-placeholder",label:"Lab Demo Video",hint:"Add: assets/psu-lab-demo.mp4"}
+      ]
     }
   ];
 
@@ -866,24 +910,43 @@
     });
   }
 
-  // ===== RENDER TIMELINE =====
-  function renderTimeline(){
-    const c=document.getElementById('timelineContainer');
+  // ===== RENDER EXPERIENCE CARDS =====
+  function renderExperience(){
+    const grid=document.getElementById('expGrid');
+    if(!grid)return;
     experience.forEach((x,i)=>{
-      const item=document.createElement('div');
-      item.className=`timeline-item reveal reveal-d${Math.min(i+1,4)}`;
-      item.innerHTML=`
-        <div class="timeline-dot"></div>
-        <div class="timeline-header">
-          <div>
-            <div class="timeline-role">${x.role} &middot; <span class="timeline-company">${x.company}</span></div>
-            <div class="timeline-location">${x.where}</div>
+      const card=document.createElement('article');
+      card.className='project-card reveal-scale';
+      card.setAttribute('tabindex','0');
+      card.setAttribute('role','button');
+      card.setAttribute('aria-label',`View experience: ${x.title}`);
+      card.innerHTML=`
+        <div class="project-thumb">
+          <div class="project-thumb-bg" style="background:${x.gradient}">
+            <span style="font-size:3.2rem;opacity:.45">${x.emoji}</span>
+            <div class="exp-thumb-overlay">
+              <div class="exp-thumb-role">${x.role}</div>
+              <div class="exp-thumb-co">${x.company}</div>
+            </div>
           </div>
-          <span class="timeline-when">${x.when}</span>
+          <div class="project-thumb-overlay"><span>View Details →</span></div>
         </div>
-        <ul class="timeline-bullets">${x.bullets.map(b=>`<li>${b}</li>`).join('')}</ul>
-        <div class="timeline-tags">${x.tags.map(t=>`<span class="chip">${t}</span>`).join('')}</div>`;
-      c.appendChild(item);
+        <div class="project-body">
+          <h3>${x.title}</h3>
+          <div class="co-sub">${x.company}</div>
+          <span class="date-badge">${x.when}</span>
+          <p class="desc">${x.summary}</p>
+          <div class="tags">${x.tags.map(t=>`<span class="chip">${t}</span>`).join('')}</div>
+        </div>`;
+      card.addEventListener('click',()=>openDetail({...x,_type:'experience'},card));
+      card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')openDetail({...x,_type:'experience'},card)});
+      grid.appendChild(card);
+      revealObserver.observe(card);
+    });
+    initTilt();
+    document.querySelectorAll('#expGrid .project-card').forEach(el=>{
+      el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+      el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
     });
   }
 
@@ -939,8 +1002,8 @@
           <p class="desc">${p.summary}</p>
           <div class="tags">${p.tags.map(t=>`<span class="chip">${t}</span>`).join('')}</div>
         </div>`;
-      card.addEventListener('click',()=>openProject(p,card));
-      card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')openProject(p,card)});
+      card.addEventListener('click',()=>openDetail({...p,_type:'project'},card));
+      card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')openDetail({...p,_type:'project'},card)});
       grid.appendChild(card);
       revealObserver.observe(card);
     });
@@ -980,89 +1043,156 @@
     row.addEventListener('mousemove',e=>{if(!isDown)return;e.preventDefault();const x=e.pageX-row.offsetLeft;row.scrollLeft=scrollLeft-(x-startX)*1.2});
   }
 
-  // ===== PROJECT DETAIL PAGE =====
-  const projectPage=document.getElementById('projectPage');
+  // ===== UNIFIED DETAIL PAGE (projects + experience) =====
+  const detailPage=document.getElementById('detailPage');
   const pageMain=document.getElementById('pageMain');
-  const transitionCover=document.getElementById('transitionCover');
   let savedScrollY=0;
 
-  function openProject(p,cardEl){
-    savedScrollY=window.scrollY;
-    transitionCover.style.background=`radial-gradient(ellipse at center,${p.heroColor||'#111'},var(--bg))`;
-    transitionCover.classList.add('active');
-    pageMain.classList.add('exiting');
+  function buildMediaHTML(p){
+    if(!p.media||!p.media.length)return'';
+    return p.media.map(m=>{
+      if(m.type==='youtube')
+        return`<div class="pp-media-item"><iframe src="${m.src}" title="Video" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>${m.caption?`<div class="pp-media-caption">${m.caption}</div>`:''}</div>`;
+      if(m.type==='image')
+        return`<div class="pp-media-item"><img src="${m.src}" alt="${m.alt||''}" />${m.caption?`<div class="pp-media-caption">${m.caption}</div>`:''}</div>`;
+      if(m.type==='pdf')
+        return`<div class="pp-media-item"><iframe src="${m.src}" title="PDF" style="height:500px"></iframe></div>`;
+      if(m.type==='placeholder')
+        return`<div class="pp-media-item pp-media-placeholder"><div class="pp-placeholder-inner">
+          <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          <div class="pp-placeholder-label">${m.label}</div>
+          <div class="pp-placeholder-hint">${m.hint}</div>
+        </div></div>`;
+      if(m.type==='video-placeholder')
+        return`<div class="pp-media-item pp-media-placeholder pp-placeholder-video"><div class="pp-placeholder-inner">
+          <svg width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><polygon points="10,8 10,16 16,12" fill="currentColor" stroke="none"/></svg>
+          <div class="pp-placeholder-label">${m.label}</div>
+          <div class="pp-placeholder-hint">${m.hint}</div>
+        </div></div>`;
+      return'';
+    }).join('');
+  }
+
+  function buildDetailHTML(p){
+    const isExp=p._type==='experience';
     const mediaHTML=buildMediaHTML(p);
     const bulletsHTML=p.bullets.map((b,i)=>
       `<li class="pp-reveal pp-reveal-d${Math.min(i+2,5)}">
         <span class="bullet-icon">${String(i+1).padStart(2,'0')}</span>
         <span>${b}</span>
       </li>`).join('');
-    const linksHTML=(p.links||[]).map(l=>`<a class="btn-outline" href="${l.href}" target="_blank" rel="noopener noreferrer">${l.label}</a>`).join('');
+    const linksHTML=(p.links||[]).map(l=>
+      `<a class="btn-outline" href="${l.href}" target="_blank" rel="noopener noreferrer">${l.label}</a>`
+    ).join('');
     let extraLinksHTML='';
     if(p.media&&p.media[0]&&p.media[0].type==='pdf')
       extraLinksHTML=`<a class="btn-primary" href="${p.media[0].src}" download>${p.media[0].label||'Download PDF'}</a>`;
 
-    projectPage.innerHTML=`
-      <div class="pp-hero" style="background:${p.gradient}">
-        <div class="pp-hero-visual">${p.heroVideo?`<video autoplay loop muted playsinline src="${p.heroVideo}"></video>`:`<div class="placeholder-anim">${p.emoji}</div>`}</div>
+    // Hero visual: thumbnail crossfade → video/image
+    const heroVisual=`
+      ${p.thumb?`<img class="pp-thumb-crossfade" src="${p.thumb}" alt="" aria-hidden="true">`:''}
+      ${p.heroVideo
+        ?`<video class="pp-video-fadein" autoplay loop muted playsinline src="${p.heroVideo}"></video>`
+        :p.thumb
+          ?`<img class="pp-img-fadein" src="${p.thumb}" alt="">`
+          :`<div class="placeholder-anim" style="font-size:7rem;opacity:.12">${p.emoji||'⚙️'}</div>`
+      }`;
+
+    const backLabel=isExp?'Back to Experience':'Back to Projects';
+    const sectionLabel=isExp?'Key Responsibilities':'Key Contributions';
+
+    return`
+      <div class="pp-hero" style="background:${p.gradient||'#111'}">
+        <div class="pp-hero-visual">${heroVisual}</div>
         <div class="pp-hero-bg"></div>
         <div class="pp-hero-content">
-          <button class="pp-back pp-reveal pp-reveal-d1" onclick="closeProject()">
+          <button class="pp-back pp-reveal pp-reveal-d1" onclick="closeDetail()">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-            Back to Projects
+            ${backLabel}
           </button>
           <div class="pp-eyebrow pp-reveal pp-reveal-d1">${p.when} &middot; ${p.where}</div>
-          <h1 class="pp-title pp-reveal pp-reveal-d2">${p.title}</h1>
+          <h1 class="pp-title pp-reveal pp-reveal-d2">${p.title||p.role}</h1>
+          ${isExp?`<div class="pp-reveal pp-reveal-d2" style="font-family:var(--mono);font-size:.82rem;color:var(--accent);margin-bottom:14px;letter-spacing:.06em">${p.company}</div>`:''}
           <div class="pp-tags-hero pp-reveal pp-reveal-d3">${p.tags.map(t=>`<span class="chip">${t}</span>`).join('')}</div>
         </div>
       </div>
       <div class="pp-body">
         <div class="pp-section pp-reveal pp-reveal-d3"><h2>Overview</h2><p class="pp-summary">${p.description||p.summary}</p></div>
-        <div class="pp-section pp-reveal pp-reveal-d4"><h2>Key Contributions</h2><ul class="pp-highlights">${bulletsHTML}</ul></div>
+        <div class="pp-section pp-reveal pp-reveal-d4"><h2>${sectionLabel}</h2><ul class="pp-highlights">${bulletsHTML}</ul></div>
         ${mediaHTML?`<div class="pp-section pp-reveal pp-reveal-d5"><h2>Media</h2><div class="pp-media-grid">${mediaHTML}</div></div>`:''}
         ${(linksHTML||extraLinksHTML)?`<div class="pp-section pp-reveal pp-reveal-d5"><h2>Links</h2><div class="pp-links">${extraLinksHTML}${linksHTML}</div></div>`:''}
       </div>`;
-
-    setTimeout(()=>{
-      projectPage.classList.add('open');
-      projectPage.scrollTop=0;
-      document.body.style.overflow='hidden';
-      document.getElementById('navbar').style.display='none';
-    },200);
-    setTimeout(()=>{transitionCover.classList.remove('active')},700);
   }
 
-  function closeProject(){
-    projectPage.querySelectorAll('video').forEach(v=>{v.pause();v.currentTime=0});
-    projectPage.querySelectorAll('iframe').forEach(f=>{
+  function openDetail(p,cardEl){
+    savedScrollY=window.scrollY;
+    detailPage.innerHTML=buildDetailHTML(p);
+    detailPage.scrollTop=0;
+    detailPage.style.opacity='1';
+    detailPage.style.transform='none';
+
+    const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if(cardEl&&!reduced){
+      const r=cardEl.getBoundingClientRect();
+      const T=Math.round(r.top),R=Math.round(window.innerWidth-r.right);
+      const B=Math.round(window.innerHeight-r.bottom),L=Math.round(r.left);
+      // Start clipped to the card rect
+      detailPage.style.clipPath=`inset(${T}px ${R}px ${B}px ${L}px round var(--r-xl))`;
+      detailPage.style.display='block';
+      detailPage.offsetHeight; // force reflow
+      // Animate clip-path to full viewport
+      detailPage.style.transition='clip-path .68s cubic-bezier(0.16,1,0.3,1)';
+      requestAnimationFrame(()=>{
+        requestAnimationFrame(()=>{
+          detailPage.style.clipPath='inset(0px 0px 0px 0px round 0px)';
+        });
+      });
+      setTimeout(()=>{detailPage.style.transition='';detailPage.style.clipPath=''},720);
+    }else{
+      // Fallback: fade + rise
+      detailPage.style.opacity='0';
+      detailPage.style.transform='translateY(24px)';
+      detailPage.style.display='block';
+      detailPage.offsetHeight;
+      detailPage.style.transition='opacity .5s var(--ease-out-expo),transform .5s var(--ease-out-expo)';
+      requestAnimationFrame(()=>{detailPage.style.opacity='1';detailPage.style.transform='none'});
+      setTimeout(()=>{detailPage.style.transition=''},550);
+    }
+
+    pageMain.classList.add('exiting');
+    setTimeout(()=>{
+      document.body.style.overflow='hidden';
+      document.getElementById('navbar').style.display='none';
+    },80);
+  }
+
+  function closeDetail(){
+    detailPage.querySelectorAll('video').forEach(v=>{v.pause();v.currentTime=0});
+    detailPage.querySelectorAll('iframe').forEach(f=>{
       try{f.contentWindow?.postMessage(JSON.stringify({event:'command',func:'pauseVideo',args:''}),'*')}catch(e){}
     });
-    projectPage.classList.add('closing');
-    transitionCover.classList.add('active');
+    const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!reduced){
+      detailPage.style.transition='opacity .38s var(--ease-out-expo),transform .38s var(--ease-out-expo)';
+      detailPage.style.opacity='0';
+      detailPage.style.transform='scale(0.97) translateY(18px)';
+    }
     setTimeout(()=>{
-      projectPage.classList.remove('open','closing');
-      projectPage.innerHTML='';
+      detailPage.style.display='none';
+      detailPage.style.transition='';
+      detailPage.style.opacity='';
+      detailPage.style.transform='';
+      detailPage.innerHTML='';
       pageMain.classList.remove('exiting');
       document.body.style.overflow='';
       document.getElementById('navbar').style.display='';
       window.scrollTo(0,savedScrollY);
-      transitionCover.classList.remove('active');
-    },500);
+    },reduced?10:400);
   }
-  window.closeProject=closeProject;
+  window.closeDetail=closeDetail;
 
-  function buildMediaHTML(p){
-    if(!p.media||!p.media.length)return'';
-    return p.media.map(m=>{
-      if(m.type==='youtube')return`<div class="pp-media-item"><iframe src="${m.src}" title="Video" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>${m.caption?`<div class="pp-media-caption">${m.caption}</div>`:''}</div>`;
-      if(m.type==='image')return`<div class="pp-media-item"><img src="${m.src}" alt="${m.alt||''}" />${m.caption?`<div class="pp-media-caption">${m.caption}</div>`:''}</div>`;
-      if(m.type==='pdf')return`<div class="pp-media-item"><iframe src="${m.src}" title="PDF report" style="height:500px"></iframe></div>`;
-      if(m.type==='placeholder')return`<div class="pp-media-item pp-media-placeholder"><div class="pp-placeholder-inner"><svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><div class="pp-placeholder-label">${m.label}</div><div class="pp-placeholder-hint">${m.hint}</div></div></div>`;
-      return'';
-    }).join('');
-  }
-
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&projectPage.classList.contains('open'))closeProject()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&detailPage.style.display==='block')closeDetail()});
 
   // ===== SCROLL REVEAL =====
   const revealObserver=new IntersectionObserver(entries=>{
@@ -1130,7 +1260,7 @@
   const scrambler=new TextScramble(document.getElementById('heroEyebrow'));
   setTimeout(()=>scrambler.setText('Quality & Process Engineer'),600);
 
-  renderTimeline();
+  renderExperience();
   renderFilters();
   renderProjects();
   renderSkills();
