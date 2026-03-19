@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Satoshi:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
     /* ===== VARIABLES ===== */
     :root {
@@ -37,15 +38,17 @@
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
-    body{font-family:var(--sans);background:var(--bg);color:var(--text-primary);-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.6;cursor:none}
+    body{font-family:var(--sans);background:var(--bg);color:var(--text-primary);-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.6}
     ::selection{background:var(--accent);color:#fff}
-    a{color:var(--accent);text-decoration:none;cursor:none}
+    a{color:var(--accent);text-decoration:none}
     a:hover{text-decoration:none}
 
     /* ===== CUSTOM CURSOR ===== */
     #cursor-dot,#cursor-ring{position:fixed;pointer-events:none;z-index:9999;border-radius:50%;transform:translate(-50%,-50%);top:-100px;left:-100px}
     #cursor-dot{width:6px;height:6px;background:var(--accent);transition:width .15s var(--ease-out-expo),height .15s var(--ease-out-expo),background .15s}
     #cursor-ring{width:28px;height:28px;border:1.5px solid var(--accent);opacity:.55;transition:width .2s var(--ease-out-expo),height .2s var(--ease-out-expo),opacity .2s,border-color .2s}
+    body.cursor-active{cursor:none}
+    body.cursor-active a,body.cursor-active button,body.cursor-active [role="button"],body.cursor-active input,body.cursor-active textarea{cursor:none}
     body.cursor-hover #cursor-dot{width:10px;height:10px;background:var(--accent-bright)}
     body.cursor-hover #cursor-ring{width:44px;height:44px;opacity:.3;border-color:var(--accent-bright)}
     body.cursor-click #cursor-dot{width:4px;height:4px}
@@ -175,7 +178,6 @@
     .edu-badge.date{background:var(--bg);color:var(--text-tertiary);border:1px solid var(--border-subtle);font-family:var(--mono);font-weight:400;font-size:.78rem}
     .edu-badge.cert{background:var(--warm-glow);color:var(--warm);border:1px solid rgba(232,193,112,.18)}
 
-    /* (timeline CSS removed — experience now uses card grid) */
     .chip{display:inline-flex;align-items:center;padding:5px 13px;border-radius:999px;background:rgba(91,156,245,.06);color:var(--accent);border:1px solid rgba(91,156,245,.12);font-size:.78rem;font-weight:500;letter-spacing:.02em;transition:background .3s,transform .3s var(--spring)}
     .chip:hover{background:rgba(91,156,245,.14);transform:translateY(-1px)}
 
@@ -308,7 +310,6 @@
     .detail-page{position:fixed;inset:0;z-index:100;background:var(--bg);overflow-y:auto;overflow-x:hidden;display:none;will-change:clip-path,opacity,transform}
 
     /* ===== HERO MEDIA CROSSFADE ===== */
-    /* Thumbnail that shows immediately then fades out as video/image fades in */
     .pp-thumb-crossfade{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;opacity:.35;animation:thumbFadeOut 1.8s .35s var(--ease-out-expo) forwards;pointer-events:none}
     @keyframes thumbFadeOut{to{opacity:0}}
     .pp-video-fadein{opacity:0;animation:mediaFadeIn 1.4s .25s var(--ease-out-expo) forwards}
@@ -329,7 +330,6 @@
     .pp-hero-bg{position:absolute;inset:0;z-index:0}
     .pp-hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(6,8,11,.3) 0%,var(--bg) 100%)}
     .pp-hero-visual{position:absolute;inset:0;display:grid;place-items:center;z-index:0;overflow:hidden}
-    /* img/video opacity is controlled by crossfade animations (.pp-thumb-crossfade, .pp-video-fadein, .pp-img-fadein) */
     .pp-hero-visual img,.pp-hero-visual video{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
     .pp-hero-visual .placeholder-anim{font-size:8rem;opacity:.1;animation:floatEmoji 6s ease-in-out infinite}
     @keyframes floatEmoji{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-20px) scale(1.05)}}
@@ -380,6 +380,43 @@
     .available-dot{width:7px;height:7px;background:var(--success);border-radius:50%;box-shadow:0 0 8px var(--success);animation:pulse-dot 2s ease-in-out infinite}
     @keyframes pulse-dot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.6}}
 
+    /* ===== DRONE SPLIT DETAIL LAYOUT ===== */
+    .drone-split{display:grid;grid-template-columns:1fr 1fr;min-height:100vh;position:relative}
+    .drone-split-left{padding:60px 56px 60px 80px;overflow-y:auto;max-height:100vh;display:flex;flex-direction:column;justify-content:center}
+    .drone-split-right{position:relative;background:#06080b;overflow:hidden;border-left:1px solid var(--border-subtle)}
+    .drone-split-right canvas{display:block;width:100%;height:100%}
+    .drone-split-left .pp-back{margin-bottom:32px}
+    .drone-split-left .pp-eyebrow{font-family:var(--mono);font-size:.76rem;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px}
+    .drone-split-left .pp-title{font-family:var(--serif);font-size:clamp(1.8rem,3.5vw,3rem);font-weight:400;line-height:1.1;margin-bottom:16px}
+    .drone-split-left .pp-summary{font-size:1rem;color:var(--text-secondary);line-height:1.85;font-weight:300;margin-bottom:28px}
+    .drone-split-left .pp-tags-hero{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px}
+    .drone-split-left .pp-highlights{display:grid;gap:10px;list-style:none;padding:0;margin-bottom:32px}
+    .drone-split-left .pp-highlights li{display:grid;grid-template-columns:32px 1fr;gap:12px;align-items:start;padding:14px 16px;background:var(--surface);border:1px solid var(--border-subtle);border-radius:var(--r-md);color:var(--text-secondary);font-weight:300;font-size:.92rem;line-height:1.65;transition:border-color .3s,transform .4s var(--spring)}
+    .drone-split-left .pp-highlights li:hover{border-color:rgba(91,156,245,.2);transform:translateX(6px)}
+    .drone-split-left .pp-highlights .bullet-icon{width:32px;height:32px;border-radius:var(--r-sm);background:var(--accent-glow);display:grid;place-items:center;color:var(--accent);font-weight:700;font-size:.75rem;font-family:var(--mono)}
+    .drone-controls-panel{position:absolute;bottom:24px;left:24px;right:24px;z-index:10;padding:18px 22px;background:rgba(10,10,18,0.8);backdrop-filter:blur(16px);border:1px solid rgba(91,156,245,0.12);border-radius:var(--r-md)}
+    .drone-controls-panel h4{font-size:.68rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(91,156,245,0.7);margin-bottom:14px}
+    .drone-ctrl-row{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px}
+    .drone-ctrl{display:flex;flex-direction:column;gap:4px}
+    .drone-ctrl label{display:flex;justify-content:space-between;font-size:.72rem;color:var(--text-tertiary);font-weight:300}
+    .drone-ctrl label span{color:rgba(91,156,245,0.6);font-family:var(--mono)}
+    .drone-ctrl input[type="range"]{-webkit-appearance:none;width:100%;height:2px;background:rgba(255,255,255,.06);border-radius:2px;outline:none}
+    .drone-ctrl input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:10px;border-radius:50%;background:rgba(91,156,245,0.7);cursor:pointer}
+    .drone-ctrl input[type="range"]::-moz-range-thumb{width:10px;height:10px;border-radius:50%;background:rgba(91,156,245,0.7);border:none;cursor:pointer}
+    .drone-interaction-hint{position:absolute;top:20px;left:50%;transform:translateX(-50%);z-index:10;font-family:var(--mono);font-size:.68rem;color:var(--text-tertiary);letter-spacing:.08em;padding:6px 16px;background:rgba(10,10,18,0.6);border:1px solid var(--border-subtle);border-radius:999px;opacity:0;animation:fadeUp .6s .8s var(--ease-out-expo) forwards;pointer-events:none}
+
+    @media(max-width:900px){
+      .drone-split{grid-template-columns:1fr;min-height:auto}
+      .drone-split-left{padding:48px 32px;max-height:none}
+      .drone-split-right{height:60vh;min-height:400px;border-left:none;border-top:1px solid var(--border-subtle)}
+    }
+    @media(max-width:640px){
+      .drone-split-left{padding:32px 20px}
+      .drone-split-right{height:50vh;min-height:320px}
+      .drone-controls-panel{padding:14px 16px}
+      .drone-ctrl-row{grid-template-columns:1fr}
+    }
+
     /* ===== REDUCED MOTION ===== */
     @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}html{scroll-behavior:auto}}
 
@@ -400,7 +437,6 @@
       .about-stats{grid-template-columns:1fr}.stat{padding:18px}
       .contact-links{flex-direction:column;align-items:stretch}
       .pp-hero{padding:36px 20px 28px}.pp-body{padding:28px 20px 48px}
-      body{cursor:auto}
     }
   </style>
 </head>
@@ -683,8 +719,6 @@
 
   </div><!-- /.page-main -->
 
-  <!-- (detail overlay is above pageMain, declared earlier) -->
-
   <!-- SEO / Schema -->
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"Person","name":"Aras Ozdemir","jobTitle":"Quality & Process Engineer","email":"mailto:ao473@cornell.edu","telephone":"+16072625047","address":{"@type":"PostalAddress","addressLocality":"Ithaca","addressRegion":"NY","addressCountry":"US"},"sameAs":["https://www.linkedin.com/in/aras-ozdemir/"]}
@@ -786,6 +820,22 @@
   ];
 
   const projects = [
+    {
+      id:"fpv-drone",title:"FPV Drone",where:"Ithaca, NY",when:"2025 – Present",
+      _isDrone:true,
+      summary:"Custom-built FPV racing drone — a parametric volumetric point-cloud UAV rendered in real-time with 60,000 particles, featuring spinning rotors, gimbal optics, and dynamic flight physics.",
+      description:"A fully interactive 3D particle visualization of a custom FPV drone. Every element — the aerodynamic fuselage, structural arms, spinning rotor blades, camera gimbal with lens optics, and scanning sensor beam — is constructed from individually positioned and colored particles. The drone follows a realistic flight path with proper pitch, roll, and yaw dynamics derived from its velocity vector. The visualization runs at 60 FPS with 60,000 particles using Three.js and additive blending for a holographic aesthetic.",
+      bullets:[
+        "Modeled a complete quadcopter UAV from 60,000 individually positioned particles with per-particle HSL coloring.",
+        "Implemented realistic flight dynamics with velocity-derived pitch, roll, and yaw transformations.",
+        "Built spinning rotor blade visualization using phase-based angular masking across four independently rotating discs.",
+        "Designed a camera gimbal subsystem with specular-highlighted lens optics and a sweeping ground-scan beam.",
+        "Engineered interactive controls for drone scale, rotor speed, hover height, and flight tilt amount."
+      ],
+      tags:["Three.js","Simulation","3D","Creative Coding"],
+      gradient:"linear-gradient(135deg,#080c14,#0a1220)",emoji:"🛸",heroColor:"#080c14",
+      thumb:null,heroVideo:null,media:[]
+    },
     {
       id:"asml",title:"ASML Robotic Arm Integration",where:"Ithaca, NY",when:"Aug 2025 – Present",
       summary:"Leading an ASML-sponsored capstone project to integrate an industrial robotic handling arm for safe laboratory deployment, including fail-safe systems and FMEA-based risk management.",
@@ -928,7 +978,6 @@
     function resize(){
       W=canvas.width=canvas.offsetWidth;
       H=canvas.height=canvas.offsetHeight;
-      // Redistribute particles on resize to avoid corner clumping
       particles.forEach(p=>{if(p.x>W)p.x=Math.random()*W;if(p.y>H)p.y=Math.random()*H});
     }
     resize();
@@ -939,7 +988,6 @@
 
     class Particle{
       constructor(i){
-        // Spread evenly across canvas on first init using grid jitter
         const cols=Math.ceil(Math.sqrt(COUNT*(W||800)/(H||600)));
         const rows=Math.ceil(COUNT/cols);
         const cx=(i%cols+.5)*(W||800)/cols;
@@ -957,19 +1005,14 @@
         this.phaseSpeed=rand(.006,.018);
       }
       update(){
-        // Gentle sine-wave drift — no velocity accumulation
         this.phase+=this.phaseSpeed;
         this.x+=this.vx+Math.sin(this.phase*.7)*.08;
         this.y+=this.vy+Math.cos(this.phase*.5)*.06;
-
-        // Soft boundary wrapping with a margin — no sticking at edges
         const m=20;
         if(this.x<-m)this.x=W+m;
         else if(this.x>W+m)this.x=-m;
         if(this.y<-m)this.y=H+m;
         else if(this.y>H+m)this.y=-m;
-
-        // Mouse soft repulsion — additive but immediately damped
         if(mouse.x!==null){
           const dx=this.x-mouse.x,dy=this.y-mouse.y;
           const dist=Math.sqrt(dx*dx+dy*dy);
@@ -979,14 +1022,10 @@
             this.vy+=dy/dist*f;
           }
         }
-
-        // Strong velocity damping — snaps back to base speed, no accumulation
         this.vx+=(this.baseVx-this.vx)*.12;
         this.vy+=(this.baseVy-this.vy)*.12;
         this.vx=clamp(this.vx,-MAX_SPEED,MAX_SPEED);
         this.vy=clamp(this.vy,-MAX_SPEED,MAX_SPEED);
-
-        // Pulse alpha
         this.alpha=this.maxAlpha*(0.5+0.5*Math.sin(this.phase));
       }
       draw(){
@@ -1002,7 +1041,6 @@
 
     function loop(){
       ctx.clearRect(0,0,W,H);
-      // Draw connecting lines first
       ctx.strokeStyle='#5b9cf5';
       ctx.lineWidth=0.5;
       for(let i=0;i<particles.length;i++){
@@ -1036,8 +1074,6 @@
       else if(!raf)loop();
     });
   })();
-
-  // (custom cursor removed — using native cursor)
 
   // ===== TEXT SCRAMBLE =====
   class TextScramble{
@@ -1205,7 +1241,7 @@
     initTilt();
   }
 
-  // ===== RENDER SKILLS (animated bars) =====
+  // ===== RENDER SKILLS (animated bars — NO percentage signs) =====
   function renderSkills(){
     const grid=document.getElementById('skillsGrid');
     skillGroups.forEach((g,i)=>{
@@ -1220,14 +1256,12 @@
           <div class="skill-bar-row">
             <div class="skill-bar-label">
               <span class="skill-bar-name">${s.name}</span>
-              <span class="skill-bar-pct">${s.pct}%</span>
             </div>
             <div class="skill-bar-track">
               <div class="skill-bar-fill" data-pct="${s.pct}" style="background:${g.color}"></div>
             </div>
           </div>`).join('')}`;
       grid.appendChild(group);
-      // Animate bars when group scrolls into view
       const barObserver=new IntersectionObserver(entries=>{
         if(!entries[0].isIntersecting)return;
         group.querySelectorAll('.skill-bar-fill').forEach((bar,idx)=>{
@@ -1291,7 +1325,7 @@
   document.getElementById('certLightbox').addEventListener('click',e=>{if(e.target===e.currentTarget)closeCertLightbox()});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('certLightbox').style.display==='flex')closeCertLightbox()});
 
-  // ===== EDUCATION CLICK (open courses overlay) =====
+  // ===== EDUCATION CLICK =====
   function initEducation(){
     educationData.forEach(edu=>{
       const card=document.getElementById('edu-'+edu.id);
@@ -1341,7 +1375,6 @@
       }
       btn.disabled=true;
       btn.textContent='Sending…';
-      // mailto fallback — opens email client with pre-filled fields
       const mailto=`mailto:ao473@cornell.edu?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent('From: '+name+' <'+email+'>\n\n'+msg)}`;
       window.location.href=mailto;
       setTimeout(()=>{
@@ -1362,7 +1395,6 @@
       pill.innerHTML=`<div class="icon-wrap">${a.icon}</div><div class="title">${a.title}</div><div class="sub">${a.sub}</div>`;
       row.appendChild(pill);
     });
-    // Drag-to-scroll
     let isDown=false,startX,scrollLeft;
     row.addEventListener('mousedown',e=>{isDown=true;row.classList.add('grabbing');startX=e.pageX-row.offsetLeft;scrollLeft=row.scrollLeft});
     row.addEventListener('mouseleave',()=>{isDown=false;row.classList.remove('grabbing')});
@@ -1370,7 +1402,229 @@
     row.addEventListener('mousemove',e=>{if(!isDown)return;e.preventDefault();const x=e.pageX-row.offsetLeft;row.scrollLeft=scrollLeft-(x-startX)*1.2});
   }
 
-  // ===== UNIFIED DETAIL PAGE (projects + experience) =====
+  // ===== 3D DRONE SCENE (for split detail) =====
+  let _droneScene=null;
+
+  function initDroneScene(canvasEl){
+    const PARTICLE_COUNT=50000;
+    const scene=new THREE.Scene();
+    scene.background=new THREE.Color(0x06080b);
+    scene.fog=new THREE.FogExp2(0x06080b,0.007);
+
+    const W=canvasEl.clientWidth,H=canvasEl.clientHeight;
+    const camera=new THREE.PerspectiveCamera(50,W/H,0.1,500);
+    camera.position.set(22,18,30);
+    camera.lookAt(0,5,0);
+
+    const renderer=new THREE.WebGLRenderer({canvas:canvasEl,antialias:true});
+    renderer.setSize(W,H);
+    renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+
+    // Orbit
+    let orbiting=false,orbStart={x:0,y:0};
+    let sph={theta:Math.atan2(camera.position.x,camera.position.z),phi:Math.acos(camera.position.y/camera.position.length()),radius:camera.position.length()};
+    const camTarget=new THREE.Vector3(0,5,0);
+
+    canvasEl.addEventListener('pointerdown',e=>{orbiting=true;orbStart={x:e.clientX,y:e.clientY}});
+    window.addEventListener('pointerup',()=>orbiting=false);
+    window.addEventListener('pointermove',e=>{
+      if(!orbiting)return;
+      sph.theta-=(e.clientX-orbStart.x)*0.005;
+      sph.phi=Math.max(0.1,Math.min(Math.PI-0.1,sph.phi+(e.clientY-orbStart.y)*0.005));
+      orbStart={x:e.clientX,y:e.clientY};
+    });
+    canvasEl.addEventListener('wheel',e=>{
+      sph.radius=Math.max(10,Math.min(80,sph.radius+e.deltaY*0.05));
+    },{passive:true});
+
+    function updateCam(){
+      camera.position.set(
+        camTarget.x+sph.radius*Math.sin(sph.phi)*Math.sin(sph.theta),
+        camTarget.y+sph.radius*Math.cos(sph.phi),
+        camTarget.z+sph.radius*Math.sin(sph.phi)*Math.cos(sph.theta)
+      );
+      camera.lookAt(camTarget);
+    }
+
+    // Particles
+    const geo=new THREE.BufferGeometry();
+    const pos=new Float32Array(PARTICLE_COUNT*3);
+    const col=new Float32Array(PARTICLE_COUNT*3);
+    geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+    geo.setAttribute('color',new THREE.BufferAttribute(col,3));
+
+    const mat=new THREE.PointsMaterial({size:0.16,vertexColors:true,sizeAttenuation:true,transparent:true,opacity:0.9,blending:THREE.AdditiveBlending,depthWrite:false});
+    scene.add(new THREE.Points(geo,mat));
+
+    // Grid
+    const gridGeo=new THREE.BufferGeometry(),gv=[];
+    const gs=60,gd=30;
+    for(let j=0;j<=gd;j++){const v=(j/gd-.5)*gs;gv.push(-gs/2,-5,v,gs/2,-5,v);gv.push(v,-5,-gs/2,v,-5,gs/2)}
+    gridGeo.setAttribute('position',new THREE.Float32BufferAttribute(gv,3));
+    scene.add(new THREE.LineSegments(gridGeo,new THREE.LineBasicMaterial({color:0x5b9cf5,transparent:true,opacity:0.05})));
+
+    const ctrl={droneScale:2.0,rotorSpeed:30,hoverHeight:5,tiltAmount:1};
+    const hash=n=>{const x=Math.sin(n)*43758.5453123;return x-Math.floor(x)};
+    const tmpColor=new THREE.Color();
+    const clock=new THREE.Clock();
+    let running=true;
+
+    function animate(){
+      if(!running)return;
+      requestAnimationFrame(animate);
+      const time=clock.getElapsedTime();
+      const{droneScale,rotorSpeed,hoverHeight,tiltAmount}=ctrl;
+      const timeSpeed=time*0.8;
+      const hoverY=Math.sin(timeSpeed*2)*1.5;
+      const moveX=Math.cos(timeSpeed*0.5)*20;
+      const moveZ=Math.sin(timeSpeed*0.3)*15;
+      const count=PARTICLE_COUNT;
+
+      for(let i=0;i<count;i++){
+        const p=i/count;
+        let lx=0,ly=0,lz=0,hue=0,sat=0,lit=0;
+
+        if(p<0.3){
+          const bp=p/0.3;
+          const phi=Math.acos(1-2*bp);
+          const theta=Math.PI*(1+Math.sqrt(5))*i;
+          lx=3.5*Math.sin(phi)*Math.cos(theta);
+          lz=5.0*Math.sin(phi)*Math.sin(theta);
+          ly=1.2*Math.cos(phi)*0.8;
+          if(lz>0){const taper=1-(lz/5)*0.4;lx*=taper;ly*=taper}
+          const nx=Math.sin(phi)*Math.cos(theta),ny=Math.cos(phi),nz=Math.sin(phi)*Math.sin(theta);
+          const dot=Math.max(0,nx*0.577+ny*0.577+nz*0.577);
+          const specular=Math.pow(dot,10)*0.5;
+          const panel=(Math.floor(lx*2)+Math.floor(lz*2))%2===0?0.05:0;
+          hue=0;sat=0;lit=0.4+dot*0.3+specular-panel;
+        }else if(p<0.5){
+          const ap=(p-0.3)/0.2;
+          const armIdx=Math.floor(ap*4);
+          const armProg=(ap*4)-armIdx;
+          const armAngle=(armIdx*Math.PI/2)+Math.PI/4;
+          const armLen=armProg*9;
+          const armRadius=0.4+(1-armProg)*0.3;
+          const aTheta=i*137.5;
+          const aR=hash(i)*armRadius;
+          const armX=armLen,armY=aR*Math.cos(aTheta),armZ=aR*Math.sin(aTheta);
+          lx=armX*Math.cos(armAngle)-armZ*Math.sin(armAngle);
+          lz=armX*Math.sin(armAngle)+armZ*Math.cos(armAngle);
+          ly=armY;
+          const dot=Math.max(0,Math.cos(aTheta)*0.577+Math.sin(aTheta)*0.577);
+          hue=0;sat=0;lit=0.1+dot*0.2;
+        }else if(p<0.8){
+          const rp=(p-0.5)/0.3;
+          const rotorIdx=Math.floor(rp*4);
+          const rotorProg=(rp*4)-rotorIdx;
+          const armAngle=(rotorIdx*Math.PI/2)+Math.PI/4;
+          const cx=9*Math.cos(armAngle),cz=9*Math.sin(armAngle);
+          if(rotorProg<0.1){
+            const rAngle=i*0.1;
+            lx=cx+3.5*Math.cos(rAngle);lz=cz+3.5*Math.sin(rAngle);
+            ly=Math.sin(i*0.5)*0.2+0.2;hue=0;sat=0;lit=0.2;
+          }else{
+            const rProg=(rotorProg-0.1)/0.9;
+            const rRad=Math.sqrt(rProg)*3.4;
+            const diskAngle=i*137.5;
+            lx=cx+rRad*Math.cos(diskAngle);lz=cz+rRad*Math.sin(diskAngle);
+            ly=0.2+Math.sin(rRad*5)*0.05;
+            const dir=(rotorIdx%2===0)?1:-1;
+            const phase=diskAngle+time*rotorSpeed*dir;
+            const wrapped=((phase%Math.PI)+Math.PI)%Math.PI;
+            const bladeDist=Math.min(wrapped,Math.PI-wrapped);
+            const isBlade=bladeDist<0.15;
+            hue=0.55;sat=0.8;lit=isBlade?0.9:0.05+(0.15*rRad/3.4);
+          }
+        }else if(p<0.95){
+          const cp=(p-0.8)/0.15;
+          if(cp<0.7){
+            const gp=cp/0.7;
+            const phi=Math.acos(1-2*gp);
+            const theta=Math.PI*(1+Math.sqrt(5))*i;
+            lx=0.8*Math.sin(phi)*Math.cos(theta);
+            lz=0.8*Math.sin(phi)*Math.sin(theta)+2.5;
+            ly=-1.5+0.8*Math.cos(phi);
+            const nx=Math.sin(phi)*Math.cos(theta),ny=Math.cos(phi),nz=Math.sin(phi)*Math.sin(theta);
+            const dot=Math.max(0,nx*0.577+ny*0.577+nz*0.577);
+            hue=0;sat=0;lit=0.1+dot*0.2;
+          }else{
+            const lp=(cp-0.7)/0.3;
+            const r=Math.sqrt(lp)*0.6;
+            const theta=i*137.5;
+            lx=r*Math.cos(theta);ly=-1.5+r*Math.sin(theta);lz=3.3;
+            const dist=r/0.6;
+            const nz2=Math.sqrt(Math.max(0,1-dist*dist));
+            const nx2=(lx/0.6)*dist;
+            const ny2=((ly+1.5)/0.6)*dist;
+            const dot=Math.max(0,nx2*0.577+ny2*0.577+nz2*0.577);
+            const spec=Math.pow(dot,20)*0.8;
+            hue=0.55;sat=0.9;lit=0.2+dist*0.3+spec;
+          }
+        }else{
+          const dp=(p-0.95)/0.05;
+          const scanR=Math.sqrt(dp)*8;
+          const scanTheta=i*137.5;
+          lx=scanR*Math.cos(scanTheta);lz=scanR*Math.sin(scanTheta)+2.5;
+          const sweep=Math.sin(timeSpeed*5)*6;
+          ly=-2-dp*15;
+          hue=0.33;sat=1;lit=(1-dp)*(Math.abs(lx-sweep)<1?0.8:0.05);
+        }
+
+        // Flight dynamics
+        const vx=-20*0.5*Math.sin(timeSpeed*0.5);
+        const vz=15*0.3*Math.cos(timeSpeed*0.3);
+        const pitch=vz*0.04*tiltAmount;
+        const roll=-vx*0.04*tiltAmount;
+        const yaw=Math.atan2(vx,vz);
+        let y1=ly*Math.cos(pitch)-lz*Math.sin(pitch);
+        let z1=ly*Math.sin(pitch)+lz*Math.cos(pitch);
+        let x1=lx;
+        let x2=x1*Math.cos(roll)-y1*Math.sin(roll);
+        let y2=x1*Math.sin(roll)+y1*Math.cos(roll);
+        let z2=z1;
+        let x3=x2*Math.cos(yaw)+z2*Math.sin(yaw);
+        let z3=-x2*Math.sin(yaw)+z2*Math.cos(yaw);
+        let y3=y2;
+
+        const idx=i*3;
+        pos[idx]=x3*droneScale+moveX;
+        pos[idx+1]=y3*droneScale+hoverY+hoverHeight;
+        pos[idx+2]=z3*droneScale+moveZ;
+        tmpColor.setHSL(hue,sat,lit);
+        col[idx]=tmpColor.r;col[idx+1]=tmpColor.g;col[idx+2]=tmpColor.b;
+      }
+      geo.attributes.position.needsUpdate=true;
+      geo.attributes.color.needsUpdate=true;
+      camTarget.lerp(new THREE.Vector3(moveX,hoverHeight,moveZ),0.02);
+      updateCam();
+      renderer.render(scene,camera);
+    }
+    animate();
+
+    // Resize handler
+    const ro=new ResizeObserver(()=>{
+      const w=canvasEl.clientWidth,h=canvasEl.clientHeight;
+      camera.aspect=w/h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w,h);
+    });
+    ro.observe(canvasEl.parentElement);
+
+    _droneScene={ctrl,destroy:()=>{
+      running=false;
+      ro.disconnect();
+      renderer.dispose();
+      geo.dispose();
+      mat.dispose();
+    }};
+    return _droneScene;
+  }
+
+  function destroyDroneScene(){
+    if(_droneScene){_droneScene.destroy();_droneScene=null}
+  }
+
+  // ===== UNIFIED DETAIL PAGE =====
   const detailPage=document.getElementById('detailPage');
   const pageMain=document.getElementById('pageMain');
   let savedScrollY=0;
@@ -1378,29 +1632,66 @@
   function buildMediaHTML(p){
     if(!p.media||!p.media.length)return'';
     return p.media.map(m=>{
-      if(m.type==='youtube')
-        return`<div class="pp-media-item"><iframe src="${m.src}" title="Video" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>${m.caption?`<div class="pp-media-caption">${m.caption}</div>`:''}</div>`;
-      if(m.type==='image')
-        return`<div class="pp-media-item"><img src="${m.src}" alt="${m.alt||''}" />${m.caption?`<div class="pp-media-caption">${m.caption}</div>`:''}</div>`;
-      if(m.type==='pdf')
-        return`<div class="pp-media-item"><iframe src="${m.src}" title="PDF" style="height:500px"></iframe></div>`;
-      if(m.type==='placeholder')
-        return`<div class="pp-media-item pp-media-placeholder"><div class="pp-placeholder-inner">
-          <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-          <div class="pp-placeholder-label">${m.label}</div>
-          <div class="pp-placeholder-hint">${m.hint}</div>
-        </div></div>`;
-      if(m.type==='video-placeholder')
-        return`<div class="pp-media-item pp-media-placeholder pp-placeholder-video"><div class="pp-placeholder-inner">
-          <svg width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><polygon points="10,8 10,16 16,12" fill="currentColor" stroke="none"/></svg>
-          <div class="pp-placeholder-label">${m.label}</div>
-          <div class="pp-placeholder-hint">${m.hint}</div>
-        </div></div>`;
+      if(m.type==='youtube')return`<div class="pp-media-item"><iframe src="${m.src}" title="Video" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>${m.caption?`<div class="pp-media-caption">${m.caption}</div>`:''}</div>`;
+      if(m.type==='image')return`<div class="pp-media-item"><img src="${m.src}" alt="${m.alt||''}" />${m.caption?`<div class="pp-media-caption">${m.caption}</div>`:''}</div>`;
+      if(m.type==='pdf')return`<div class="pp-media-item"><iframe src="${m.src}" title="PDF" style="height:500px"></iframe></div>`;
+      if(m.type==='placeholder')return`<div class="pp-media-item pp-media-placeholder"><div class="pp-placeholder-inner"><svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><div class="pp-placeholder-label">${m.label}</div><div class="pp-placeholder-hint">${m.hint}</div></div></div>`;
+      if(m.type==='video-placeholder')return`<div class="pp-media-item pp-media-placeholder pp-placeholder-video"><div class="pp-placeholder-inner"><svg width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polygon points="10,8 10,16 16,12" fill="currentColor" stroke="none"/></svg><div class="pp-placeholder-label">${m.label}</div><div class="pp-placeholder-hint">${m.hint}</div></div></div>`;
       return'';
     }).join('');
   }
 
+  function buildDroneDetailHTML(p){
+    const bulletsHTML=p.bullets.map((b,i)=>
+      `<li class="pp-reveal pp-reveal-d${Math.min(i+2,5)}">
+        <span class="bullet-icon">${String(i+1).padStart(2,'0')}</span>
+        <span>${b}</span>
+      </li>`).join('');
+
+    return`
+    <div class="drone-split">
+      <div class="drone-split-left">
+        <button class="pp-back pp-reveal pp-reveal-d1" onclick="closeDetail()">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Back to Projects
+        </button>
+        <div class="pp-eyebrow pp-reveal pp-reveal-d1">${p.when}</div>
+        <h1 class="pp-title pp-reveal pp-reveal-d2">${p.title}</h1>
+        <div class="pp-tags-hero pp-reveal pp-reveal-d2">${p.tags.map(t=>`<span class="chip">${t}</span>`).join('')}</div>
+        <p class="pp-summary pp-reveal pp-reveal-d3">${p.description||p.summary}</p>
+        <ul class="pp-highlights pp-reveal pp-reveal-d4">${bulletsHTML}</ul>
+      </div>
+      <div class="drone-split-right">
+        <div class="drone-interaction-hint">Drag to orbit · Scroll to zoom</div>
+        <canvas id="droneCanvas"></canvas>
+        <div class="drone-controls-panel">
+          <h4>Drone Parameters</h4>
+          <div class="drone-ctrl-row">
+            <div class="drone-ctrl">
+              <label>Scale <span id="dv-scale">2.0</span></label>
+              <input type="range" id="dc-scale" min="0.5" max="5" step="0.1" value="2.0">
+            </div>
+            <div class="drone-ctrl">
+              <label>Rotor Speed <span id="dv-rotor">30</span></label>
+              <input type="range" id="dc-rotor" min="0" max="50" step="1" value="30">
+            </div>
+            <div class="drone-ctrl">
+              <label>Hover Height <span id="dv-hover">5</span></label>
+              <input type="range" id="dc-hover" min="-10" max="20" step="0.5" value="5">
+            </div>
+            <div class="drone-ctrl">
+              <label>Flight Tilt <span id="dv-tilt">1.0</span></label>
+              <input type="range" id="dc-tilt" min="0" max="2" step="0.1" value="1.0">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
   function buildDetailHTML(p){
+    if(p._isDrone) return buildDroneDetailHTML(p);
+
     const isExp=p._type==='experience';
     const isEdu=p._type==='education';
     const mediaHTML=buildMediaHTML(p);
@@ -1416,7 +1707,6 @@
     if(p.media&&p.media[0]&&p.media[0].type==='pdf')
       extraLinksHTML=`<a class="btn-primary" href="${p.media[0].src}" download>${p.media[0].label||'Download PDF'}</a>`;
 
-    // Hero visual: thumbnail crossfade → video/image
     const heroVisual=`
       ${p.thumb?`<img class="pp-thumb-crossfade" src="${p.thumb}" alt="" aria-hidden="true">`:''}
       ${p.heroVideo
@@ -1435,7 +1725,7 @@
         <div class="pp-hero-bg"></div>
         <div class="pp-hero-content">
           <button class="pp-back pp-reveal pp-reveal-d1" onclick="closeDetail()">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
             ${backLabel}
           </button>
           ${!isEdu?`<div class="pp-eyebrow pp-reveal pp-reveal-d1">${p.when} &middot; ${p.where}</div>`:''}
@@ -1474,6 +1764,7 @@
         detailPage.style.transition='';
         document.body.style.overflow='hidden';
         document.getElementById('navbar').style.display='none';
+        if(p._isDrone) initDroneAfterOpen();
       },480);
       return;
     }
@@ -1495,10 +1786,34 @@
       detailPage.style.clipPath='';
       document.body.style.overflow='hidden';
       document.getElementById('navbar').style.display='none';
+      if(p._isDrone) initDroneAfterOpen();
     },700);
   }
 
+  function initDroneAfterOpen(){
+    const canvas=document.getElementById('droneCanvas');
+    if(!canvas)return;
+    const ds=initDroneScene(canvas);
+    // Wire controls
+    const map={
+      'dc-scale':{key:'droneScale',display:'dv-scale'},
+      'dc-rotor':{key:'rotorSpeed',display:'dv-rotor'},
+      'dc-hover':{key:'hoverHeight',display:'dv-hover'},
+      'dc-tilt':{key:'tiltAmount',display:'dv-tilt'}
+    };
+    Object.entries(map).forEach(([id,{key,display}])=>{
+      const el=document.getElementById(id);
+      if(!el)return;
+      el.addEventListener('input',()=>{
+        ds.ctrl[key]=parseFloat(el.value);
+        const disp=document.getElementById(display);
+        if(disp)disp.textContent=el.value;
+      });
+    });
+  }
+
   function closeDetail(){
+    destroyDroneScene();
     detailPage.querySelectorAll('video').forEach(v=>{v.pause();v.currentTime=0});
     detailPage.querySelectorAll('iframe').forEach(f=>{
       try{f.contentWindow?.postMessage(JSON.stringify({event:'command',func:'pauseVideo',args:''}),'*')}catch(e){}
@@ -1549,13 +1864,11 @@
     document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').forEach(el=>revealObserver.observe(el));
   }
 
-  // ===== SCROLL PROGRESS BAR =====
   function updateScrollProgress(){
     const progress=(window.scrollY/(document.documentElement.scrollHeight-window.innerHeight))*100;
     document.getElementById('scrollProgress').style.width=progress+'%';
   }
 
-  // ===== NAV ACTIVE SECTION =====
   function updateActiveNav(){
     const sections=['about','education','experience','projects','skills','certificates','contact'];
     let current='';
@@ -1563,7 +1876,6 @@
     document.querySelectorAll('.nav-links a').forEach(a=>a.classList.toggle('active-link',a.dataset.section===current));
   }
 
-  // ===== NAV HIDE/SHOW =====
   let lastScroll=0;
   window.addEventListener('scroll',()=>{
     const cur=window.scrollY;
@@ -1603,27 +1915,43 @@
   initContactForm();
   document.getElementById('yearFooter').textContent=new Date().getFullYear();
 
-  // ===== CUSTOM CURSOR =====
+  // ===== CUSTOM CURSOR (event delegation — works on dynamic elements) =====
   (function initCursor(){
     if(window.matchMedia('(pointer:coarse)').matches)return;
+    // Enable custom cursor
+    document.body.classList.add('cursor-active');
+
     const dot=document.getElementById('cursor-dot');
     const ring=document.getElementById('cursor-ring');
+    if(!dot||!ring)return;
+
     let mx=-200,my=-200,rx=-200,ry=-200;
+
     document.addEventListener('mousemove',e=>{
       mx=e.clientX;my=e.clientY;
       dot.style.left=mx+'px';dot.style.top=my+'px';
     });
     document.addEventListener('mousedown',()=>document.body.classList.add('cursor-click'));
     document.addEventListener('mouseup',()=>document.body.classList.remove('cursor-click'));
+
     (function animate(){
-      rx+=(mx-rx)*.1;ry+=(my-ry)*.1;
+      rx+=(mx-rx)*.12;ry+=(my-ry)*.12;
       ring.style.left=rx+'px';ring.style.top=ry+'px';
       requestAnimationFrame(animate);
     })();
-    const hoverSels='a,button,[role="button"],.proj-card,.exp-card,.edu-card,.cert-card,.activity-pill,.nav-links a';
-    document.querySelectorAll(hoverSels).forEach(el=>{
-      el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
-      el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+
+    // Event delegation — covers all current and future dynamic elements
+    const hoverSelector='a,button,[role="button"],.project-card,.edu-card,.cert-card,.activity-pill,.filter-btn,.contact-card,.magnetic-wrap,.pp-back,.drone-ctrl input';
+
+    document.addEventListener('mouseover',e=>{
+      if(e.target.closest(hoverSelector)){
+        document.body.classList.add('cursor-hover');
+      }
+    });
+    document.addEventListener('mouseout',e=>{
+      if(e.target.closest(hoverSelector)){
+        document.body.classList.remove('cursor-hover');
+      }
     });
   })();
   </script>
