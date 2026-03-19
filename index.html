@@ -347,6 +347,9 @@
     }
     .hero h1 em {
       font-style: italic;
+      color: var(--accent);
+    }
+    .hero h1 em .letter {
       background: linear-gradient(135deg, var(--accent), var(--accent-bright));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -1719,13 +1722,18 @@
     function animateHeroTitle() {
       const title = document.getElementById('heroTitle');
       const html = title.innerHTML;
-      // Split text into letters, preserving tags
       let delay = 0;
-      const newHTML = html.replace(/([^<>\s])/g, (match) => {
+      let insideTag = false;
+      let result = '';
+      for (let i = 0; i < html.length; i++) {
+        const ch = html[i];
+        if (ch === '<') { insideTag = true; result += ch; continue; }
+        if (ch === '>') { insideTag = false; result += ch; continue; }
+        if (insideTag || ch === ' ') { result += ch; continue; }
         delay += 0.03;
-        return `<span class="letter" style="animation-delay:${delay.toFixed(2)}s">${match}</span>`;
-      });
-      title.innerHTML = newHTML;
+        result += `<span class="letter" style="animation-delay:${delay.toFixed(2)}s">${ch}</span>`;
+      }
+      title.innerHTML = result;
     }
 
     // ===== ANIMATED COUNTERS =====
