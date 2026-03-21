@@ -761,10 +761,10 @@
       ],
       tags:["ISO 13485","ISO 9001","510(k)","CAPA","GD&T","IQ/OQ/PQ","FDA"],
       gradient:"linear-gradient(135deg,#071420,#0d2035)",
-      heroColor:"#071420",emoji:"🔬",thumb:"assets/fresenius-kabi-ag-logo-vector.svg",heroVideo:null,
+      heroColor:"#071420",emoji:"🔬",thumb:"assets/fresenius-kabi-ag-logo-vector.svg",heroVideo:"assets/Medical_Device_Manufacturing_Process.mp4",
       media:[
         {type:"image",src:"assets/fk-tester.jpg",alt:"Automated durability test rig",caption:"Automated Durability Test Rig"},
-        {type:"video-placeholder",label:"Test Rig in Action",hint:"Add: assets/fk-tester-demo.mp4"},
+        {type:"video",src:"assets/Medical_Device_Manufacturing_Process.mp4",caption:"Medical Device Manufacturing Process"},
         {type:"image",src:"assets/fk-drawings.jpg",alt:"Technical drawing samples",caption:"Technical Drawing Samples"}
       ]
     },
@@ -783,11 +783,11 @@
       ],
       tags:["MATLAB","Microscopy","Data Analysis","Signal Processing","R"],
       gradient:"linear-gradient(135deg,#0f1f12,#142018)",
-      heroColor:"#0f1f12",emoji:"🧬",thumb:"assets/BME-header-mobile.png",heroVideo:null,
+      heroColor:"#0f1f12",emoji:"🧬",thumb:"assets/BME-header-mobile.png",heroVideo:"assets/Bioluminescent_Bacteria_Time_Lapse_Video.mp4",
       media:[
         {type:"youtube",src:"https://www.youtube.com/embed/qZP2B0zn_uk?rel=0&modestbranding=1&playsinline=1&enablejsapi=1"},
         {type:"image",src:"assets/GUI.png",alt:"Custom MATLAB GUI for automated data analysis",caption:"Custom MATLAB GUI"},
-        {type:"placeholder",label:"Microscopy Images",hint:"Add: assets/psu-microscopy.jpg"}
+        {type:"video",src:"assets/Bioluminescent_Bacteria_Time_Lapse_Video.mp4",caption:"Bioluminescent Bacteria Time Lapse"}
       ]
     }
   ];
@@ -1633,6 +1633,7 @@
       if(m.type==='pdf')return`<div class="pp-media-item"><iframe src="${m.src}" title="PDF" style="height:500px"></iframe></div>`;
       if(m.type==='placeholder')return`<div class="pp-media-item pp-media-placeholder"><div class="pp-placeholder-inner"><svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><div class="pp-placeholder-label">${m.label}</div><div class="pp-placeholder-hint">${m.hint}</div></div></div>`;
       if(m.type==='video-placeholder')return`<div class="pp-media-item pp-media-placeholder pp-placeholder-video"><div class="pp-placeholder-inner"><svg width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polygon points="10,8 10,16 16,12" fill="currentColor" stroke="none"/></svg><div class="pp-placeholder-label">${m.label}</div><div class="pp-placeholder-hint">${m.hint}</div></div></div>`;
+      if(m.type==='video')return`<div class="pp-media-item"><video src="${m.src}" autoplay muted loop playsinline style="width:100%;height:360px;object-fit:cover;display:block"></video>${m.caption?`<div class="pp-media-caption">${m.caption}</div>`:''}</div>`;
       return'';
     }).join('');
   }
