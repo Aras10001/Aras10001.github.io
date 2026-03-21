@@ -787,7 +787,7 @@
       media:[
         {type:"youtube",src:"https://www.youtube.com/embed/qZP2B0zn_uk?rel=0&modestbranding=1&playsinline=1&enablejsapi=1"},
         {type:"image",src:"assets/GUI.png",alt:"Custom MATLAB GUI for automated data analysis",caption:"Custom MATLAB GUI"},
-        {type:"video",src:"assets/Bioluminescent_Bacteria_Time_Lapse_Video.mp4",caption:"Bioluminescent Bacteria Time Lapse"}
+        {type:"image",src:"assets/BacteriaPETRI.jpg",alt:"Bacteria petri dish",caption:"Bacteriophage Culture"}
       ]
     }
   ];
@@ -1137,7 +1137,7 @@
       card.innerHTML=`
         <div class="project-thumb">
           <div class="project-thumb-bg" style="background:${x.gradient}">
-            <span style="font-size:3.2rem;opacity:.45">${x.emoji}</span>
+            ${x.thumb?`<img src="${x.thumb}" alt="${x.company}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;opacity:.55">`:`<span style="font-size:3.2rem;opacity:.45">${x.emoji}</span>`}
             <div class="exp-thumb-overlay">
               <div class="exp-thumb-role">${x.role}</div>
               <div class="exp-thumb-co">${x.company}</div>
