@@ -796,16 +796,16 @@
     {
       id:"fpv-drone",title:"FPV Drone",where:"Ithaca, NY",when:"2025 – Present",
       _isDrone:true,
-      summary:"Custom-built FPV racing drone — a parametric volumetric point-cloud UAV rendered in real-time with 60,000 particles, featuring spinning rotors, gimbal optics, and dynamic flight physics.",
-      description:"A fully interactive 3D particle visualization of a custom FPV drone. Every element — the aerodynamic fuselage, structural arms, spinning rotor blades, camera gimbal with lens optics, and scanning sensor beam — is constructed from individually positioned and colored particles. The drone follows a realistic flight path with proper pitch, roll, and yaw dynamics derived from its velocity vector. The visualization runs at 60 FPS with 60,000 particles using Three.js and additive blending for a holographic aesthetic.",
+      summary:"Designing and building a high-performance FPV drone from scratch — integrating a custom SolidWorks/ANSYS frame, tuned brushless motor stack, PID flight controller, and low-latency FPV system into a fully validated aerial platform.",
+      description:"A ground-up custom FPV drone build integrating mechanical design, embedded systems, and flight control engineering into a single cohesive aerial platform. The project focuses on modularity and flight stability, with a custom SolidWorks/ANSYS-optimized frame designed for maximum thrust-to-weight ratio and vibration damping. A tuned brushless motor and ESC setup delivers precise throttle response, while a low-latency FPV camera and telemetry system enables real-time performance analysis during flight. Engineering rigor runs throughout — DFMEA is applied to identify failure modes early, and Lean Six Sigma methodology drives iterative testing and continuous improvement toward a reliable, high-performance system.",
       bullets:[
-        "Modeled a complete quadcopter UAV from 60,000 individually positioned particles with per-particle HSL coloring.",
-        "Implemented realistic flight dynamics with velocity-derived pitch, roll, and yaw transformations.",
-        "Built spinning rotor blade visualization using phase-based angular masking across four independently rotating discs.",
-        "Designed a camera gimbal subsystem with specular-highlighted lens optics and a sweeping ground-scan beam.",
-        "Engineered interactive controls for drone scale, rotor speed, hover height, and flight tilt amount."
+        "Designing a custom frame in SolidWorks with ANSYS FEA to optimize thrust-to-weight ratio and structural rigidity under aggressive maneuvers.",
+        "Tuning PID flight controller parameters through iterative real-world flight testing to achieve stable and responsive handling.",
+        "Integrating high-efficiency brushless motors and ESC stack for precise throttle response and maximum energy efficiency.",
+        "Deploying a low-latency FPV camera and telemetry system for real-time in-flight performance monitoring and data capture.",
+        "Applying DFMEA and Lean Six Sigma to systematically identify potential failure modes and drive continuous reliability improvements."
       ],
-      tags:["Three.js","Simulation","3D","Creative Coding"],
+      tags:["SolidWorks","ANSYS","PID Control","DFMEA","Lean Six Sigma","Embedded Systems"],
       gradient:"linear-gradient(135deg,#080c14,#0a1220)",emoji:"🛸",heroColor:"#080c14",
       thumb:null,heroVideo:null,media:[]
     },
@@ -815,8 +815,8 @@
       description:"This ASML-sponsored capstone at Cornell involves the full integration of a donated industrial robotic handling arm into a university lab environment. The challenge goes beyond simple installation — it requires building the complete electrical and mechanical infrastructure from scratch, designing a control network that prioritizes safety above all else, and creating operational protocols that allow researchers to use the system confidently. The project combines dynamic force simulation in MATLAB with FMEA-driven risk assessment to ensure every failure mode is accounted for before the arm ever moves under power.",
       bullets:["Design electrical & mechanical support systems for safe robotic operation.","Perform dynamic force simulations in MATLAB to evaluate loading and safety margins.","Conduct FMEA-based risk assessments to identify hazards and define mitigations.","Architect a sensor-integrated fail-safe shutdown system for unsafe trajectory detection.","Publish safety guidelines & operational protocols for lab deployment."],
       tags:["Robotics","FMEA","MATLAB","Safety"],gradient:"linear-gradient(135deg,#1a1f35,#0d1a2d)",emoji:"🤖",heroColor:"#1a2540",
-      heroVideo:"assets/Robotic_Arm_Animation_Generated.mp4",thumb:"assets/RobotPic.png",
-      media:[{type:"image",src:"assets/RobotPic.png",alt:"Robotic arm in lab",caption:"Industrial robotic handling arm"},{type:"placeholder",label:"Controls & Wiring Setup",hint:"Add: assets/asml-controls.jpg"},{type:"placeholder",label:"MATLAB Force Simulation",hint:"Add: assets/asml-sim.jpg"}]
+      heroVideo:"assets/Robotic_Arm_Animation_Generated.mp4",thumb:"assets/ASMLLOGO.svg",
+      media:[{type:"image",src:"assets/ASML_ROBOT.png",alt:"ASML robotic arm",caption:"ASML Robotic Arm"},{type:"image",src:"assets/ForceSimulation.Png",alt:"MATLAB force simulation",caption:"Force Simulation Results"},{type:"pdf",src:"assets/Semester 1 Progress Report.pdf",label:"Read Semester 1 Progress Report (PDF)"}]
     },
     {
       id:"bbraun",title:"B. Braun Capstone — Connector Redesign",where:"State College, PA",when:"Jan 2024 – May 2024",
@@ -824,7 +824,7 @@
       description:"Sponsored by B. Braun Medical, this capstone tackled a critical failure mode: secondary connectors unclamping during medical procedures. Through systematic mechanical testing and iterative CAD prototyping backed by COMSOL-based FEA simulations, the team optimized stress distribution across the connector geometry. The final design achieved a 48% improvement in grip strength while maintaining the customer-specified flow rate — a delicate balance between mechanical performance and fluid dynamics.",
       bullets:["Analyzed failure modes of secondary connector unclamping using mechanical testing.","Iterated CAD prototypes with COMSOL-based FEA to optimize stress distribution.","Improved connector grip strength by 48% while maintaining flow rate requirements.","Ensured documentation complied with FDA design control and regulatory standards."],
       tags:["Design Controls","Prototyping","FEA","FDA"],gradient:"linear-gradient(135deg,#1f1a2e,#1a1025)",emoji:"🏥",heroColor:"#1e1530",
-      heroVideo:"assets/bbraun.mp4",thumb:"assets/BBraun.png",
+      heroVideo:"assets/bbraun.mp4",thumb:"assets/Logo_Sharing_Expertise.jpg",
       media:[{type:"youtube",src:"https://www.youtube.com/embed/e7jPhOMTgnY?rel=0&modestbranding=1&playsinline=1&enablejsapi=1"},{type:"image",src:"assets/PosterCapstone.jpg",alt:"Capstone project poster",caption:"Capstone Poster"},{type:"pdf",src:"assets/Final Report.pdf",label:"Read Final Report (PDF)"}],
       links:[{label:"Sponsor Site",href:"https://www.bbraun.com"}]
     },
@@ -834,7 +834,7 @@
       description:"This project brought engineering into the public eye — literally. The team designed and built an interactive exhibit for the Discovery Space Museum in State College, creating mechanical systems that needed to be simultaneously engaging for children, educational for families, and robust enough to withstand thousands of interactions. Every mechanism was designed with safety as the top priority, while ensuring the hands-on elements remained intuitive and genuinely fun to explore.",
       bullets:["Designed interactive mechanisms for hands-on learning.","Ensured safety & durability of all mechanical elements."],
       tags:["Exhibit","Design","Safety"],gradient:"linear-gradient(135deg,#1a2a1f,#0d1a15)",emoji:"🔬",heroColor:"#142218",
-      heroVideo:"assets/Playful_Mechanical_Diorama_Animation.mp4",thumb:"assets/DiscoverySpaceCAD.png",
+      heroVideo:"assets/Playful_Mechanical_Diorama_Animation.mp4",thumb:"assets/DiscoverySpacelogo.svg",
       media:[{type:"image",src:"assets/DiscoverySpaceCAD.png",alt:"Discovery Space CAD design",caption:"Exhibit CAD Design"},{type:"image",src:"assets/image000001.JPG",alt:"Discovery Space exhibit",caption:"Exhibit Installation"},{type:"pdf",src:"assets/Design_Summary_F23_Ozdemir_Aras_Team 6.7.pdf",label:"Read Design Summary (PDF)"}]
     },
     {
