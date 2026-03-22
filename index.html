@@ -15,28 +15,28 @@
   <meta name="description" content="Portfolio of Aras Ozdemir — Quality & Process Engineer | Mechanical & Biomedical Engineering." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Satoshi:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Instrument+Serif:ital@0;1&family=Satoshi:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
-    /* ===== VARIABLES ===== */
+    /* ===== VARIABLES — STAR WARS THEME ===== */
     :root {
-      --bg: #06080b;
-      --bg-elevated: #0a0d12;
-      --surface: #0e1218;
-      --surface-hover: #131920;
-      --border: #1a2130;
-      --border-subtle: #101620;
-      --text-primary: #e8ecf2;
-      --text-secondary: #7d8a9e;
-      --text-tertiary: #3d4a5e;
-      --accent: #5b9cf5;
-      --accent-dim: #2e6bc4;
-      --accent-glow: rgba(91,156,245,0.1);
-      --accent-bright: #93c5fd;
+      --bg: #000005;
+      --bg-elevated: #05050f;
+      --surface: #0a0a16;
+      --surface-hover: #0f0f1e;
+      --border: #1e1e36;
+      --border-subtle: #111124;
+      --text-primary: #ede0c4;
+      --text-secondary: #8a7d65;
+      --text-tertiary: #4a4232;
+      --accent: #FFE81F;
+      --accent-dim: #c4b200;
+      --accent-glow: rgba(255,232,31,0.12);
+      --accent-bright: #fff59d;
       --warm: #e8c170;
       --warm-glow: rgba(232,193,112,0.08);
-      --success: #4ade80;
-      --serif: 'Instrument Serif', Georgia, serif;
+      --success: #57f000;
+      --serif: 'Orbitron', 'Instrument Serif', Georgia, serif;
       --sans: 'Satoshi', -apple-system, sans-serif;
       --mono: 'JetBrains Mono', monospace;
       --ease-out-expo: cubic-bezier(0.16,1,0.3,1);
@@ -66,7 +66,7 @@
     body::before{content:'';position:fixed;inset:0;z-index:9990;pointer-events:none;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:128px}
 
     /* ===== SCROLL PROGRESS ===== */
-    .scroll-progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent-bright),var(--warm));z-index:200;width:0%;transition:width .1s linear}
+    .scroll-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#FFE81F,#fff59d,#4fc3f7,#ff4444);z-index:200;width:0%;transition:width .1s linear;box-shadow:0 0 10px rgba(255,232,31,0.6)}
 
     /* ===== REVEAL SYSTEM ===== */
     .reveal{opacity:0;transform:translateY(48px);transition:opacity .9s var(--ease-out-expo),transform .9s var(--ease-out-expo)}
@@ -1883,6 +1883,34 @@
   initEducation();
   initContactForm();
   document.getElementById('yearFooter').textContent=new Date().getFullYear();
+
+  // ===== STAR WARS STARFIELD =====
+  (function initStarfield(){
+    const canvas=document.createElement('canvas');
+    canvas.style.cssText='position:fixed;inset:0;z-index:-1;pointer-events:none;width:100vw;height:100vh';
+    canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+    document.body.prepend(canvas);
+    const ctx=canvas.getContext('2d');
+    const stars=Array.from({length:250},()=>({
+      x:Math.random()*canvas.width,y:Math.random()*canvas.height,
+      r:Math.random()*1.4+0.3,
+      o:Math.random()*0.7+0.2,
+      twinkleSpeed:Math.random()*0.02+0.005,
+      twinklePhase:Math.random()*Math.PI*2
+    }));
+    let frame=0;
+    function draw(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      stars.forEach(s=>{
+        const opacity=s.o*(0.6+0.4*Math.sin(frame*s.twinkleSpeed+s.twinklePhase));
+        ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+        ctx.fillStyle=`rgba(255,255,255,${opacity})`;ctx.fill();
+      });
+      frame++;requestAnimationFrame(draw);
+    }
+    draw();
+    window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight});
+  })();
 
   // ===== CUSTOM CURSOR (event delegation — works on dynamic elements) =====
   (function initCursor(){
